@@ -1,0 +1,17 @@
+user:
+    create user - POST
+    login - POST - login if the user exist, else create a new user with random username and blank email and send user details back
+    read user data - GET - read user data on profile page
+    read friends - GET - read the connections the user is having
+    get received connections - GET
+    update user - PUT
+
+transactions:
+    create a new transaction - POST
+    update transaction - PUT - to change transaction details or change the status
+    read transactions - GET - read all the transactions with status as unsettled
+
+connection:
+    send connection request - POST - add 2 records in connection table - one with sent status and one with received status
+    remove connection - PUT - soft delete - update both record with status as removed
+    accept or reject connection - PUT - change status to accepted or rejected
