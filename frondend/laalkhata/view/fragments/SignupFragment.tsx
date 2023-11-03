@@ -1,6 +1,7 @@
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react';
-import { Icon } from '@rneui/themed';
+import FontAwesomeIcon  from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {styles as appStyles} from '../../styles';
 
 export default function SignupFragment() {
@@ -8,9 +9,8 @@ export default function SignupFragment() {
         <View style={[appStyles.container]}>
           <View style={styles.inputWrapper}>
             <View style={styles.iconContainer}>
-                <Icon 
+                <FontAwesomeIcon
                   name='user'
-                  type='font-awesome'
                 />
             </View>
             <TextInput
@@ -20,9 +20,8 @@ export default function SignupFragment() {
           </View>
           <View style={styles.inputWrapper}>
             <View style={styles.iconContainer}>
-                <Icon 
+                <FontAwesomeIcon 
                   name='phone'
-                  type='font-awesome'
                 />
             </View>
             <TextInput
@@ -33,9 +32,8 @@ export default function SignupFragment() {
           </View>
           <View style={styles.inputWrapper}>
             <View style={styles.iconContainer}>
-                <Icon 
-                  name='email'
-                  type='font-awesome'
+                <FontAwesomeIcon 
+                  name='envelope-open'
                 />
             </View>
             <TextInput
@@ -45,9 +43,8 @@ export default function SignupFragment() {
           </View>
           <View style={styles.inputWrapper}>
             <View style={styles.iconContainer}>
-                <Icon 
-                  name='password'
-                  type='font-awesome'
+                <FontAwesomeIcon 
+                  name='unlock-alt'
                 />
             </View>
             <TextInput
@@ -57,9 +54,8 @@ export default function SignupFragment() {
           </View>
           <View style={styles.inputWrapper}>
             <View style={styles.iconContainer}>
-                <Icon 
-                  name='upi'
-                  type='font-awesome'
+                <FontAwesome5Icon 
+                  name='google-pay'
                 />
             </View>
             <TextInput

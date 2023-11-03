@@ -1,6 +1,6 @@
 import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react';
-import { Icon } from '@rneui/themed';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {styles as appStyles} from '../../styles';
 
 export default function LoginFragment() {
@@ -8,10 +8,7 @@ export default function LoginFragment() {
     <View style={[appStyles.container]}>
       <View style={styles.inputWrapper}>
         <View style={styles.iconContainer}>
-            <Icon 
-              name='phone'
-              type='font-awesome'
-            />
+            <FontAwesomeIcon name='phone'/>
         </View>
         <TextInput
           style={styles.inputStyle}
@@ -21,10 +18,7 @@ export default function LoginFragment() {
       </View>
       <View style={styles.inputWrapper}>
         <View style={styles.iconContainer}>
-            <Icon 
-              name='phone'
-              type='font-awesome'
-            />
+            <FontAwesomeIcon name='unlock-alt'/>
         </View>
         <TextInput
           style={styles.inputStyle}
