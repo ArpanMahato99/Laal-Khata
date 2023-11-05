@@ -1,0 +1,51 @@
+package com.bitspilani.wilp.splitter.controller;
+
+
+import com.bitspilani.wilp.splitter.dto.ApiErrorDTO;
+import com.bitspilani.wilp.splitter.exception.DuplicateEntryExistsException;
+import com.bitspilani.wilp.splitter.exception.InvalidConnectionRequestException;
+import com.bitspilani.wilp.splitter.exception.UserNotExistException;
+import com.bitspilani.wilp.splitter.exception.WrongCredentialsException;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.LocalDateTime;
+
+@ControllerAdvice
+public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(DuplicateEntryExistsException.class)
+    public ResponseEntity<ApiErrorDTO> handleDuplicateDataException (DuplicateEntryExistsException e, final HttpServletRequest request) {
+
+        ApiErrorDTO apiErrorDTO = new ApiErrorDTO(e.getStatus(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(apiErrorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(WrongCredentialsException.class)
+    public ResponseEntity<ApiErrorDTO> wrongCredentialException (WrongCredentialsException e, final HttpServletRequest request) {
+        ApiErrorDTO apiErrorDTO = new ApiErrorDTO(e.getStatus(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(apiErrorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(UserNotExistException.class)
+    public ResponseEntity<ApiErrorDTO> handleUserNotFoundException(UserNotExistException e, final HttpServletRequest request) {
+        ApiErrorDTO apiErrorDTO = new ApiErrorDTO(e.getStatus(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(apiErrorDTO, e.getStatus());
+    }
+//
+//    @ExceptionHandler(ConnectionNotMaintainedException.class)
+//    public ResponseEntity<ApiErrorDTO> noConnectionException(ConnectionNotMaintainedException e, final HttpServletRequest request) {
+//        ApiErrorDTO apiErrorDTO = new ApiErrorDTO(e.getStatus(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+//        return new ResponseEntity<>(apiErrorDTO, e.getStatus());
+//    }
+
+    @ExceptionHandler(InvalidConnectionRequestException.class)
+    public ResponseEntity<ApiErrorDTO> handleUserNotFoundException(InvalidConnectionRequestException e, final HttpServletRequest request) {
+        ApiErrorDTO apiErrorDTO = new ApiErrorDTO(e.getStatus(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(apiErrorDTO, e.getStatus());
+    }
+
+}
