@@ -8,11 +8,9 @@ import java.util.UUID;
 public interface TransactionService {
     TransactionDTO createTransaction(final TransactionDTO transactionDTO);
 
-    TransactionDTO getTransactionDetails(final UUID transactionId);
+    TransactionDTO getTransactionDetails(final String transactionId);
     List<TransactionDTO> getTransactionsByUserId(final String userId);
-    List<TransactionDTO> getTransactionsBetweenUsers(final UUID uuid1, final UUID uuid2);
+    List<TransactionDTO> getTransactionsBetweenUsers(final String userId1, final String userId2);
 
-    TransactionDTO updateTransaction(final TransactionDTO transactionDTO);
-
-    void settleTransactions(final List<TransactionDTO> transactionDTOList);
+    TransactionDTO updateTransaction(final String transactionId, final TransactionDTO transactionDTO);
 }
