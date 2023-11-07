@@ -1,9 +1,6 @@
 package com.bitspilani.wilp.splitter.controller;
 
-import com.bitspilani.wilp.splitter.dto.ConnectionDTO;
-import com.bitspilani.wilp.splitter.dto.LoginDTO;
-import com.bitspilani.wilp.splitter.dto.TransactionDTO;
-import com.bitspilani.wilp.splitter.dto.UserDTO;
+import com.bitspilani.wilp.splitter.dto.*;
 import com.bitspilani.wilp.splitter.service.ConnectionService;
 import com.bitspilani.wilp.splitter.service.TransactionService;
 import com.bitspilani.wilp.splitter.service.UserService;
@@ -14,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -43,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping("{userId}/connections")
-    public ResponseEntity<List<ConnectionDTO>> getConnectionList (@PathVariable("userId") final String userId) {
-        List<ConnectionDTO> connectionList = connectionService.getConnectionList(userId);
+    public ResponseEntity<List<ConnectionResponseDTO>> getConnectionList (@PathVariable("userId") final String userId) {
+        List<ConnectionResponseDTO> connectionList = connectionService.getConnectionList(userId);
         return new ResponseEntity<>(connectionList, HttpStatus.OK);
     }
 

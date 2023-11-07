@@ -62,8 +62,8 @@ public class GeneralUtils {
                 .build();
     }
 
-    public static Transaction buildTransaction(TransactionRequestDTO transactionDTO) {
-        List<TransactionDetails> transactionUsers = new ArrayList<>();
+    public static Transaction buildTransaction(TransactionDTO transactionDTO) {
+        List<TransactionUser> transactionUsers = new ArrayList<>();
         transactionDTO.getUsers().forEach(transactionUserDTO ->
                 transactionUsers.add(GeneralUtils.buildTransactionUser(transactionUserDTO)));
         return Transaction.builder()
@@ -75,52 +75,33 @@ public class GeneralUtils {
                 .build();
     }
 
-    public static TransactionResponseDTO buildTransactionResponseDTO(
-            Transaction transaction, List<TransactionResponseDetailsDTO> detailsList) {
-
-        return TransactionResponseDTO.builder()
+    public static TransactionDTO buildTransactionDTO(Transaction transaction) {
+        List<TransactionUserDTO> transactionUserDTOs = new ArrayList<>();
+        transaction.getUsers().forEach(transactionUser ->
+                transactionUserDTOs.add(GeneralUtils.buildTransactionUserDTO(transactionUser)));
+        return TransactionDTO.builder()
                 .transactionId(transaction.getTransactionId().toHexString())
                 .description(transaction.getDescription())
                 .paidBy(transaction.getPaidBy().toHexString())
                 .totalAmount(transaction.getTotalAmount())
                 .timestamp(transaction.getTimestamp())
-                .details(detailsList)
+                .users(transactionUserDTOs)
                 .build();
     }
 
-
-    public static TransactionDetails buildTransactionUser(TransactionResponseDetailsDTO transactionUserDTO) {
-        return TransactionDetails.builder()
-                .userId(new ObjectId(transactionUserDTO.get()))
+    public static TransactionUser buildTransactionUser(TransactionUserDTO transactionUserDTO) {
+        return TransactionUser.builder()
+                .userId(new ObjectId(transactionUserDTO.getUserId()))
                 .amount(transactionUserDTO.getAmount())
                 .status(transactionUserDTO.getStatus())
                 .build();
     }
 
-    public static TransactionResponseDetailsDTO buildTransactionUserDTO(TransactionDetails transactionUser) {
-        return TransactionResponseDetailsDTO.builder()
+    public static TransactionUserDTO buildTransactionUserDTO(TransactionUser transactionUser) {
+        return TransactionUserDTO.builder()
                 .userId(transactionUser.getUserId().toHexString())
                 .amount(transactionUser.getAmount())
                 .status(transactionUser.getStatus())
-                .build();
-    }
-
-    public static TransactionResponseUserDTO buildTransactionResponseUserDTO(User user) {
-        return TransactionResponseUserDTO.builder()
-                .userId(user.getUserId().toHexString())
-                .email(user.getEmail())
-                .fullName(user.getFullName())
-                .upiId(user.getUpiId())
-                .phoneNumber(user.getPhoneNumber())
-                .build();
-    }
-
-    public static TransactionResponseDetailsDTO buildTransactionResponseDetailsDTO(
-            TransactionDetails transactionDetails, TransactionResponseUserDTO user) {
-        return TransactionResponseDetailsDTO.builder()
-                .amount(transactionDetails.getAmount())
-                .status(transactionDetails.getStatus())
-                .user(user)
                 .build();
     }
 }
