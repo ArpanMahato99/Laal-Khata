@@ -1,15 +1,14 @@
 package com.bitspilani.wilp.splitter.service;
 
-import com.bitspilani.wilp.splitter.dto.ConnectionDTO;
-import com.bitspilani.wilp.splitter.enums.ConnectionStatus;
+import com.bitspilani.wilp.splitter.dto.ConnectionRequestDTO;
+import com.bitspilani.wilp.splitter.dto.ConnectionResponseDTO;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ConnectionService {
-    ConnectionDTO sendConnectionRequest(final ConnectionDTO connectionDTO);
+    ConnectionResponseDTO sendConnectionRequest(final ConnectionRequestDTO connectionDTO);
 
-    List<ConnectionDTO> getConnectionList(final String userId);
+    List<ConnectionResponseDTO> getConnectionList(final String userId);
 
-    ConnectionDTO updateConnection(final String connectionId, final ConnectionDTO connectionDTO);
+    ConnectionResponseDTO updateConnection(final String connectionId, final ConnectionRequestDTO connectionDTO);
 }

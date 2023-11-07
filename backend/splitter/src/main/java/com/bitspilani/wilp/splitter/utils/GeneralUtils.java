@@ -1,14 +1,10 @@
 package com.bitspilani.wilp.splitter.utils;
 
-import com.bitspilani.wilp.splitter.dto.ConnectionDTO;
-import com.bitspilani.wilp.splitter.dto.TransactionDTO;
-import com.bitspilani.wilp.splitter.dto.TransactionUserDTO;
-import com.bitspilani.wilp.splitter.dto.UserDTO;
+import com.bitspilani.wilp.splitter.dto.*;
 import com.bitspilani.wilp.splitter.enums.ConnectionStatus;
-import com.bitspilani.wilp.splitter.enums.TransactionStatus;
 import com.bitspilani.wilp.splitter.model.Connection;
 import com.bitspilani.wilp.splitter.model.Transaction;
-import com.bitspilani.wilp.splitter.model.TransactionUser;
+import com.bitspilani.wilp.splitter.model.TransactionDetails;
 import com.bitspilani.wilp.splitter.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -39,7 +35,7 @@ public class GeneralUtils {
                 .build();
     }
 
-    public static Connection buildConnection(ConnectionDTO connectionDTO, ConnectionStatus connectionStatus) {
+    public static Connection buildConnection(ConnectionRequestDTO connectionDTO, ConnectionStatus connectionStatus) {
         return Connection.builder()
                 .user1Id(new ObjectId(connectionDTO.getUser1Id()))
                 .user2Id(new ObjectId(connectionDTO.getUser2Id()))
@@ -47,17 +43,27 @@ public class GeneralUtils {
                 .build();
     }
 
-    public static ConnectionDTO buildConnectionDTO(Connection connection){
-        return ConnectionDTO.builder()
+    public static ConnectionResponseDTO buildConnectionResponseDTO(Connection connection, List<User> userList){
+        return ConnectionResponseDTO.builder()
                 .connectionId(connection.getConnectionId().toHexString())
-                .user1Id(connection.getUser1Id().toHexString())
-                .user2Id(connection.getUser2Id().toHexString())
+                .user1(GeneralUtils.buildConnectionUserDTO(userList.get(0)))
+                .user2(GeneralUtils.buildConnectionUserDTO(userList.get(1)))
                 .status(connection.getStatus())
                 .build();
     }
 
-    public static Transaction buildTransaction(TransactionDTO transactionDTO) {
-        List<TransactionUser> transactionUsers = new ArrayList<>();
+    public static ConnectionResponseUserDTO buildConnectionUserDTO(User user) {
+        return ConnectionResponseUserDTO.builder()
+                .userId(user.getUserId().toHexString())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .upiId(user.getUpiId())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
+    public static Transaction buildTransaction(TransactionRequestDTO transactionDTO) {
+        List<TransactionDetails> transactionUsers = new ArrayList<>();
         transactionDTO.getUsers().forEach(transactionUserDTO ->
                 transactionUsers.add(GeneralUtils.buildTransactionUser(transactionUserDTO)));
         return Transaction.builder()
@@ -69,33 +75,52 @@ public class GeneralUtils {
                 .build();
     }
 
-    public static TransactionDTO buildTransactionDTO(Transaction transaction) {
-        List<TransactionUserDTO> transactionUserDTOs = new ArrayList<>();
-        transaction.getUsers().forEach(transactionUser ->
-                        transactionUserDTOs.add(GeneralUtils.buildTransactionUserDTO(transactionUser)));
-        return TransactionDTO.builder()
+    public static TransactionResponseDTO buildTransactionResponseDTO(
+            Transaction transaction, List<TransactionResponseDetailsDTO> detailsList) {
+
+        return TransactionResponseDTO.builder()
                 .transactionId(transaction.getTransactionId().toHexString())
                 .description(transaction.getDescription())
                 .paidBy(transaction.getPaidBy().toHexString())
                 .totalAmount(transaction.getTotalAmount())
                 .timestamp(transaction.getTimestamp())
-                .users(transactionUserDTOs)
+                .details(detailsList)
                 .build();
     }
 
-    public static TransactionUser buildTransactionUser(TransactionUserDTO transactionUserDTO) {
-        return TransactionUser.builder()
-                .userId(new ObjectId(transactionUserDTO.getUserId()))
+
+    public static TransactionDetails buildTransactionUser(TransactionResponseDetailsDTO transactionUserDTO) {
+        return TransactionDetails.builder()
+                .userId(new ObjectId(transactionUserDTO.get()))
                 .amount(transactionUserDTO.getAmount())
                 .status(transactionUserDTO.getStatus())
                 .build();
     }
 
-    public static TransactionUserDTO buildTransactionUserDTO(TransactionUser transactionUser) {
-        return TransactionUserDTO.builder()
+    public static TransactionResponseDetailsDTO buildTransactionUserDTO(TransactionDetails transactionUser) {
+        return TransactionResponseDetailsDTO.builder()
                 .userId(transactionUser.getUserId().toHexString())
                 .amount(transactionUser.getAmount())
                 .status(transactionUser.getStatus())
+                .build();
+    }
+
+    public static TransactionResponseUserDTO buildTransactionResponseUserDTO(User user) {
+        return TransactionResponseUserDTO.builder()
+                .userId(user.getUserId().toHexString())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .upiId(user.getUpiId())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
+    public static TransactionResponseDetailsDTO buildTransactionResponseDetailsDTO(
+            TransactionDetails transactionDetails, TransactionResponseUserDTO user) {
+        return TransactionResponseDetailsDTO.builder()
+                .amount(transactionDetails.getAmount())
+                .status(transactionDetails.getStatus())
+                .user(user)
                 .build();
     }
 }

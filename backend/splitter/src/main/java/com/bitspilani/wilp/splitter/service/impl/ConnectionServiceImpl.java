@@ -1,11 +1,13 @@
 package com.bitspilani.wilp.splitter.service.impl;
 
-import com.bitspilani.wilp.splitter.dto.ConnectionDTO;
+import com.bitspilani.wilp.splitter.dto.ConnectionRequestDTO;
+import com.bitspilani.wilp.splitter.dto.ConnectionResponseDTO;
 import com.bitspilani.wilp.splitter.enums.ConnectionStatus;
 import com.bitspilani.wilp.splitter.exception.DuplicateEntryExistsException;
 import com.bitspilani.wilp.splitter.exception.InvalidConnectionRequestException;
 import com.bitspilani.wilp.splitter.exception.UnmaintainedConnectionException;
 import com.bitspilani.wilp.splitter.model.Connection;
+import com.bitspilani.wilp.splitter.model.User;
 import com.bitspilani.wilp.splitter.repository.ConnectionRepository;
 import com.bitspilani.wilp.splitter.repository.UserRepository;
 import com.bitspilani.wilp.splitter.service.ConnectionService;
@@ -17,6 +19,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +30,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ConnectionRepository connectionRepository;
     private final UserRepository userRepository;
     @Override
-    public ConnectionDTO sendConnectionRequest(ConnectionDTO connectionDTO) {
+    public ConnectionResponseDTO sendConnectionRequest(ConnectionRequestDTO connectionDTO) {
 
         if (connectionDTO.getUser1Id().equals(connectionDTO.getUser2Id())) {
             throw new InvalidConnectionRequestException("");
@@ -43,23 +46,24 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         Connection newConnection = GeneralUtils.buildConnection(connectionDTO, ConnectionStatus.AWAITING);
         newConnection = connectionRepository.save(newConnection);
-
-        return GeneralUtils.buildConnectionDTO(newConnection);
+        List<User> userList = userRepository.findAllById(Arrays.asList(newConnection.getUser1Id(), newConnection.getUser2Id()));
+        return GeneralUtils.buildConnectionResponseDTO(newConnection, userList);
     }
 
     @Override
-    public List<ConnectionDTO> getConnectionList(String userId) {
-        List<Connection> connectionList = connectionRepository.findAllByUserId(userId);
-        List<ConnectionDTO> connectionDTOList = new ArrayList<>();
+    public List<ConnectionResponseDTO> getConnectionList(String userId) {
+        List<Connection> connectionList = connectionRepository.findAllByUserId(new ObjectId(userId));
+        List<ConnectionResponseDTO> connectionResponseDTOList = new ArrayList<>();
         for (Connection connection : connectionList) {
-            ConnectionDTO connectionDTO = GeneralUtils.buildConnectionDTO(connection);
-            connectionDTOList.add(connectionDTO);
+            List<User> userList = userRepository.findAllById(Arrays.asList(connection.getUser1Id(), connection.getUser2Id()));
+            ConnectionResponseDTO connectionResponseDTO = GeneralUtils.buildConnectionResponseDTO(connection, userList);
+            connectionResponseDTOList.add(connectionResponseDTO);
         }
-        return connectionDTOList;
+        return connectionResponseDTOList;
     }
 
     @Override
-    public ConnectionDTO updateConnection(String connectionId, ConnectionDTO connectionDTO) {
+    public ConnectionResponseDTO updateConnection(String connectionId, ConnectionRequestDTO connectionDTO) {
         Optional<Connection> optionalConnection = connectionRepository.findById(new ObjectId(connectionId));
         if (optionalConnection.isEmpty()) {
             throw new UnmaintainedConnectionException(Constants.NO_SUCH_CONNECTION_EXIST_MSG);
@@ -67,6 +71,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection = optionalConnection.get();
         connection.setStatus(connectionDTO.getStatus());
         connection = connectionRepository.save(connection);
-        return GeneralUtils.buildConnectionDTO(connection);
+        List<User> userList = userRepository.findAllById(Arrays.asList(connection.getUser1Id(), connection.getUser2Id()));
+        return GeneralUtils.buildConnectionResponseDTO(connection, userList);
     }
 }

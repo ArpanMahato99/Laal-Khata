@@ -20,8 +20,5 @@ public interface ConnectionRepository extends MongoRepository<Connection, Object
     Optional<Connection> findConnectionsBetweenUsers(String user1Id, String user2Id);
 
     @Query("{ $or: [ { 'user1Id': ?0 }, { 'user2Id': ?0 } ] }")
-    List<Connection> findAllByUserId(String userId);
-
-    Optional<Connection> findFirstByConnectionId(String id);
-
+    List<Connection> findAllByUserId(ObjectId userId);
 }
