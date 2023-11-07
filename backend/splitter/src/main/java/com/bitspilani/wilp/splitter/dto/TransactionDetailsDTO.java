@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class TransactionUserDTO {
+public class TransactionDetailsDTO {
     private String userId;
     private Float amount;
     private TransactionStatus status;

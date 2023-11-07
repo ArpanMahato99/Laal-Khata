@@ -6,11 +6,9 @@ import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.transaction.TransactionStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Builder
 @NoArgsConstructor
@@ -28,7 +26,7 @@ public class Transaction {
     private Float totalAmount;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private List<TransactionUser> users;
+    private List<TransactionDetails> users;
 
 
 

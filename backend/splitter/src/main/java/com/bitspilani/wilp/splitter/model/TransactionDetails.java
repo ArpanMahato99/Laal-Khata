@@ -10,7 +10,7 @@ import org.bson.types.ObjectId;
 @Getter
 @Setter
 @ToString
-public class TransactionUser {
+public class TransactionDetails {
     private ObjectId userId;
     private Float amount;
     private TransactionStatus status;

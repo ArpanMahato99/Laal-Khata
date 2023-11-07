@@ -63,45 +63,45 @@ public class GeneralUtils {
     }
 
     public static Transaction buildTransaction(TransactionDTO transactionDTO) {
-        List<TransactionUser> transactionUsers = new ArrayList<>();
-        transactionDTO.getUsers().forEach(transactionUserDTO ->
-                transactionUsers.add(GeneralUtils.buildTransactionUser(transactionUserDTO)));
+        List<TransactionDetails> transactionDetails = new ArrayList<>();
+        transactionDTO.getUsers().forEach(transactionDetailsDTO ->
+                transactionDetails.add(GeneralUtils.buildTransactionUser(transactionDetailsDTO)));
         return Transaction.builder()
                 .description(transactionDTO.getDescription())
                 .paidBy(new ObjectId(transactionDTO.getPaidBy()))
                 .totalAmount(transactionDTO.getTotalAmount())
                 .timestamp(transactionDTO.getTimestamp() != null ? transactionDTO.getTimestamp() : LocalDateTime.now())
-                .users(transactionUsers)
+                .users(transactionDetails)
                 .build();
     }
 
     public static TransactionDTO buildTransactionDTO(Transaction transaction) {
-        List<TransactionUserDTO> transactionUserDTOs = new ArrayList<>();
-        transaction.getUsers().forEach(transactionUser ->
-                transactionUserDTOs.add(GeneralUtils.buildTransactionUserDTO(transactionUser)));
+        List<TransactionDetailsDTO> transactionDetailsDTOS = new ArrayList<>();
+        transaction.getUsers().forEach(transactionDetails ->
+                transactionDetailsDTOS.add(GeneralUtils.buildTransactionUserDTO(transactionDetails)));
         return TransactionDTO.builder()
                 .transactionId(transaction.getTransactionId().toHexString())
                 .description(transaction.getDescription())
                 .paidBy(transaction.getPaidBy().toHexString())
                 .totalAmount(transaction.getTotalAmount())
                 .timestamp(transaction.getTimestamp())
-                .users(transactionUserDTOs)
+                .users(transactionDetailsDTOS)
                 .build();
     }
 
-    public static TransactionUser buildTransactionUser(TransactionUserDTO transactionUserDTO) {
-        return TransactionUser.builder()
-                .userId(new ObjectId(transactionUserDTO.getUserId()))
-                .amount(transactionUserDTO.getAmount())
-                .status(transactionUserDTO.getStatus())
+    public static TransactionDetails buildTransactionUser(TransactionDetailsDTO transactionDetailsDTO) {
+        return TransactionDetails.builder()
+                .userId(new ObjectId(transactionDetailsDTO.getUserId()))
+                .amount(transactionDetailsDTO.getAmount())
+                .status(transactionDetailsDTO.getStatus())
                 .build();
     }
 
-    public static TransactionUserDTO buildTransactionUserDTO(TransactionUser transactionUser) {
-        return TransactionUserDTO.builder()
-                .userId(transactionUser.getUserId().toHexString())
-                .amount(transactionUser.getAmount())
-                .status(transactionUser.getStatus())
+    public static TransactionDetailsDTO buildTransactionUserDTO(TransactionDetails transactionDetails) {
+        return TransactionDetailsDTO.builder()
+                .userId(transactionDetails.getUserId().toHexString())
+                .amount(transactionDetails.getAmount())
+                .status(transactionDetails.getStatus())
                 .build();
     }
 }
