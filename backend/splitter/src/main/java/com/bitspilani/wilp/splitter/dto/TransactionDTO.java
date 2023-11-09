@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -16,5 +17,5 @@ public class TransactionDTO {
     private String description;
     private Float totalAmount;
     private LocalDateTime timestamp;
-    private List<TransactionDetailsDTO> users;
+    private Map<String, TransactionDetailsDTO> userTransactionDetails;
 }

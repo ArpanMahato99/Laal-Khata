@@ -32,8 +32,10 @@ public class TransactionServiceImpl implements TransactionService {
         if (transactionDTO.getTotalAmount() <= 0) {
             throw new InvalidDataException(Constants.INVALID_AMOUNT_MSG);
         }
-        transactionDTO.getUsers()
-                .forEach(transactionUserDTO -> transactionUserDTO.setStatus(TransactionStatus.UNSETTLED));
+        transactionDTO.getUserTransactionDetails()
+                .forEach((userId, transactionDetailsDTO) -> transactionDetailsDTO
+                        .setStatus(userId.equals(transactionDTO.getPaidBy()) ?
+                                TransactionStatus.SETTLED : TransactionStatus.UNSETTLED) );
         Transaction transaction = GeneralUtils.buildTransaction(transactionDTO);
         transaction = transactionRepository.save(transaction);
         return GeneralUtils.buildTransactionDTO(transaction);

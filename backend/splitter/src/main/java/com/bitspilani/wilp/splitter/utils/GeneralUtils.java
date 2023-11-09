@@ -11,7 +11,9 @@ import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class GeneralUtils {
@@ -64,8 +66,8 @@ public class GeneralUtils {
 
     public static Transaction buildTransaction(TransactionDTO transactionDTO) {
         List<TransactionDetails> transactionDetails = new ArrayList<>();
-        transactionDTO.getUsers().forEach(transactionDetailsDTO ->
-                transactionDetails.add(GeneralUtils.buildTransactionUser(transactionDetailsDTO)));
+        transactionDTO.getUserTransactionDetails().forEach((userId,transactionDetailsDTO) ->
+                transactionDetails.add(GeneralUtils.buildTransactionDetails(userId ,transactionDetailsDTO)));
         return Transaction.builder()
                 .description(transactionDTO.getDescription())
                 .paidBy(new ObjectId(transactionDTO.getPaidBy()))
@@ -77,21 +79,24 @@ public class GeneralUtils {
 
     public static TransactionDTO buildTransactionDTO(Transaction transaction) {
         List<TransactionDetailsDTO> transactionDetailsDTOS = new ArrayList<>();
+        Map<String, TransactionDetailsDTO> transactionDetailsDTOMap = new HashMap<>();
         transaction.getUsers().forEach(transactionDetails ->
-                transactionDetailsDTOS.add(GeneralUtils.buildTransactionUserDTO(transactionDetails)));
+                        transactionDetailsDTOMap.put(
+                                transactionDetails.getUserId().toHexString(),
+                                GeneralUtils.buildTransactionUserDTO(transactionDetails)));
         return TransactionDTO.builder()
                 .transactionId(transaction.getTransactionId().toHexString())
                 .description(transaction.getDescription())
                 .paidBy(transaction.getPaidBy().toHexString())
                 .totalAmount(transaction.getTotalAmount())
                 .timestamp(transaction.getTimestamp())
-                .users(transactionDetailsDTOS)
+                .userTransactionDetails(transactionDetailsDTOMap)
                 .build();
     }
 
-    public static TransactionDetails buildTransactionUser(TransactionDetailsDTO transactionDetailsDTO) {
+    public static TransactionDetails buildTransactionDetails(String userID, TransactionDetailsDTO transactionDetailsDTO) {
         return TransactionDetails.builder()
-                .userId(new ObjectId(transactionDetailsDTO.getUserId()))
+                .userId(new ObjectId(userID))
                 .amount(transactionDetailsDTO.getAmount())
                 .status(transactionDetailsDTO.getStatus())
                 .build();
@@ -99,7 +104,6 @@ public class GeneralUtils {
 
     public static TransactionDetailsDTO buildTransactionUserDTO(TransactionDetails transactionDetails) {
         return TransactionDetailsDTO.builder()
-                .userId(transactionDetails.getUserId().toHexString())
                 .amount(transactionDetails.getAmount())
                 .status(transactionDetails.getStatus())
                 .build();

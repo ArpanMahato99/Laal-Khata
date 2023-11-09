@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class TransactionDetailsDTO {
-    private String userId;
     private Float amount;
     private TransactionStatus status;
 }
