@@ -1,45 +1,72 @@
-import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {styles as appStyles} from '../../styles';
+import { Formik } from 'formik';
 
 export default function LoginFragment() {
+  const initValues = {phone:'', password: ''};
   return (
     <View style={[appStyles.container]}>
-      <View style={styles.inputWrapper}>
-        <View style={styles.iconContainer}>
-            <FontAwesomeIcon name='phone'/>
-        </View>
-        <TextInput
-          style={styles.inputStyle}
-          placeholder='Phone Number'  
-          keyboardType='numeric'    
-        />
-      </View>
-      <View style={styles.inputWrapper}>
-        <View style={styles.iconContainer}>
-            <FontAwesomeIcon name='unlock-alt'/>
-        </View>
-        <TextInput
-          style={styles.inputStyle}
-          placeholder='Password'      
-        />
-      </View>
-      <View style={styles.btnContainer}>
-        <Pressable
-          style={[appStyles.btn, styles.btn]}
-          onPress={() => Alert.alert("Login api call")}
-        >
-          <Text style={[appStyles.darkFontColor, styles.btnText]}>Login</Text>
-        </Pressable>
-      </View>
+      <Formik
+        initialValues={initValues}
+        onSubmit={values => console.log(values)}
+      >
+        {({handleChange, handleSubmit, values}) => (
+          <View>
+            <View style={styles.inputWrapper}>
+              <View style={styles.iconContainer}>
+                  <FontAwesomeIcon 
+                    name='phone'
+                    color={appStyles.textInputPlaceholder.color}
+                    size={40}
+                  />
+              </View>
+              <TextInput
+                style={styles.inputStyle}
+                placeholder='Phone Number'
+                placeholderTextColor={appStyles.textInputPlaceholder.color}    
+                keyboardType='numeric'  
+                onChangeText={handleChange('phone')}  
+                value={values.phone}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <View style={styles.iconContainer}>
+                  <FontAwesomeIcon 
+                    name='unlock-alt'
+                    color={appStyles.textInputPlaceholder.color}
+                    size={40}
+                  />
+              </View>
+              <TextInput
+                style={styles.inputStyle}
+                placeholder='Password' 
+                secureTextEntry={true}
+                placeholderTextColor={appStyles.textInputPlaceholder.color}   
+                onChangeText={handleChange('password')}  
+                value={values.password}   
+              />
+            </View>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={[appStyles.btn, styles.btn]}
+                onPress={handleSubmit}
+              >
+                <Text style={[appStyles.darkFontColor, styles.btnText]}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </Formik>
+
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   iconContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#2C3335',
     height: 50,
     width: 50,
     borderRadius: 10,
@@ -53,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   inputStyle: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#2C3335',
     width: '80%',
     height: 50,
     padding: 8,
@@ -70,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '50%',
-    backgroundColor: '#2ecc72',
+    backgroundColor: '#218F76',
   },
   btnText: {
     fontSize: 18,

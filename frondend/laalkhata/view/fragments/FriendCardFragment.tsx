@@ -1,58 +1,50 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Button, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import type { PropsWithChildren } from 'react'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6'
 import {styles as appStyles} from '../../styles'
+
+type FriendCardProps = PropsWithChildren<Connection>;
 
 const icon = {
     color: "#FFFFFF",
-    size: 20
+    size: 30
 }
+const currentUser: User = {
+    userId: "6547d449b51c515e9e34c728",
+    fullName: "Arpan Mahato",
+    email: "test@abc.com",
+    phoneNumber: "8797021466",
+    upiId: "text@sbi.com"
+  } 
 
 
-export default function FriendCardFragment() {
+export default function FriendCardFragment(connection: FriendCardProps): JSX.Element {
   return (
-    <View>
-        <View style={styles.cardContainer}>
-        <View style={styles.userContainer}>
-            <View style={styles.iconContainer}>
-                <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
-            </View>
-            <View style={styles.userNameContainer}>
-                <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>USER 1</Text>
-            </View>
-        </View>
-        <View style={styles.moneyContainer}>
-            <Text style={[styles.negativeTxt, styles.miniTxt]}>you owe</Text>
-            <Text style={[styles.negativeTxt]}>₹10.20</Text>
-        </View>
-    </View>
     <View style={styles.cardContainer}>
         <View style={styles.userContainer}>
             <View style={styles.iconContainer}>
                 <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
             </View>
             <View style={styles.userNameContainer}>
-                <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>USER 1</Text>
+                <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>
+                    {   connection.user2.userId !== currentUser.userId ?
+                        connection.user2.fullName : connection.user1.fullName
+                    }
+                </Text>
             </View>
         </View>
-        <View style={styles.moneyContainer}>
-            <Text style={[styles.positiveTxt, styles.miniTxt]}>owes you</Text>
-            <Text style={[styles.positiveTxt]}>₹10.20</Text>
+        <View style={styles.rightContainer}>
+            {
+                connection.status === 'APPROVED' && (
+                    <View>
+                        <Text style={[appStyles.negativeTxt, styles.miniTxt]}>you owe</Text>
+                        <Text style={[appStyles.negativeTxt]}>₹10.20</Text>
+                    </View>
+                )
+            }
         </View>
-    </View>
-    <View style={styles.cardContainer}>
-        <View style={styles.userContainer}>
-            <View style={styles.iconContainer}>
-                <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
-            </View>
-            <View style={styles.userNameContainer}>
-                <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>USER 1</Text>
-            </View>
-        </View>
-        <View style={styles.moneyContainer}>
-            <Text style={[styles.settledUpTxt]}>settled up</Text>
-        </View>
-    </View>
     </View>
   )
 }
@@ -60,18 +52,22 @@ export default function FriendCardFragment() {
 const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
-        marginHorizontal: 10,
-        paddingVertical:10,
-        paddingHorizontal: 5,
-        justifyContent: 'space-between'
+        marginHorizontal: 15,
+        marginVertical: 5,
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        backgroundColor: "#2C3335"
     },
     iconContainer: {
-        width: 40,
-        height: 40,
-        backgroundColor: "#F4C724",
+        width: 60,
+        height: 60,
+        backgroundColor: '#2C3335',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 50
+        borderRadius: 5,
+        borderColor: "#fff",
+        borderWidth: 0.25,
+        margin: 10
     },
     userContainer: {
         flexDirection: 'row',
@@ -84,19 +80,18 @@ const styles = StyleSheet.create({
         fontSize:20,
     },
     miniTxt: {
-        fontSize: 11
+        fontSize: 14
     },
-    moneyContainer: {
+    rightContainer: {
         alignItems: 'flex-end',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingRight: 20
     },
-    negativeTxt: {
-        color: "#FF362E"
+    btnContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     },
-    positiveTxt: {
-        color: "#2ecc72"
-    },
-    settledUpTxt: {
-        color: "#DAE0E2",
+    btn: {
+        marginRight: 10
     }
 })

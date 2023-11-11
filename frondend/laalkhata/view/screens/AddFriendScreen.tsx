@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function ProfileScreen() {
+export default function AddFriendScreen() {
   return (
     <View>
-      <Text>ProfileScreen</Text>
+      <Text>AddFriendScreen</Text>
     </View>
   )
 }

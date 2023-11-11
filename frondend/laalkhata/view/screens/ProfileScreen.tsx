@@ -1,0 +1,202 @@
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import React, {useState} from 'react'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import {styles as appStyles} from '../../styles';
+import { Formik } from 'formik';
+
+export default function ProfileScreen() {
+  const icon = {
+    color: "#FFFFFF",
+    size: 40
+  }
+  const currentUser: User = {
+    userId: "6547d449b51c515e9e34c728",
+    fullName: "Arpan Mahato",
+    email: "test@abc.com",
+    phoneNumber: "8797021466",
+    upiId: "text@sbi.com"
+  } 
+
+  const [isEditable, setIsEditable] = useState(false);
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.headericonContainer}>
+            <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
+        </View>
+      </View>
+      <View >
+      <Formik
+            initialValues={currentUser}
+            onSubmit={values => console.log(values)}
+          >
+            {({handleChange, handleSubmit, values}) => (
+              <View>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.iconContainer}>
+                      <FontAwesomeIcon
+                        name='user'
+                        color={appStyles.textInputPlaceholder.color}
+                        size={40}
+                      />
+                  </View>
+                  <TextInput
+                    style={[styles.inputStyle]}
+                    placeholder='Full Name'
+                    placeholderTextColor={appStyles.textInputPlaceholder.color} 
+                    onChangeText={handleChange('fullName')}
+                    value={values.fullName}  
+                    editable={isEditable}   
+                  />
+                </View>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.iconContainer}>
+                      <FontAwesomeIcon 
+                        name='phone'
+                        color={appStyles.textInputPlaceholder.color}
+                        size={40}
+                      />
+                  </View>
+                  <TextInput
+                    style={styles.inputStyle}
+                    placeholder='Phone Number'
+                    placeholderTextColor={appStyles.textInputPlaceholder.color}  
+                    keyboardType='numeric'
+                    onChangeText={handleChange('phone')}
+                    value={values.phoneNumber}
+                    editable={isEditable}        
+                  />
+                </View>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.iconContainer}>
+                      <FontAwesomeIcon 
+                        name='envelope-open'
+                        color={appStyles.textInputPlaceholder.color}
+                        size={40}
+                      />
+                  </View>
+                  <TextInput
+                    style={styles.inputStyle}
+                    placeholder='Email'
+                    placeholderTextColor={appStyles.textInputPlaceholder.color}    
+                    onChangeText={handleChange('email')}
+                    value={values.email} 
+                    editable={isEditable}       
+                  />
+                </View>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.iconContainer}>
+                      <FontAwesome5Icon 
+                        name='google-pay'
+                        color={appStyles.textInputPlaceholder.color}
+                        size={40}
+                      />
+                  </View>
+                  <TextInput
+                    style={styles.inputStyle}
+                    placeholder='UPI ID'
+                    placeholderTextColor={appStyles.textInputPlaceholder.color}      
+                    onChangeText={handleChange('upiId')}
+                    value={values.upiId} 
+                    editable={isEditable}     
+                  />
+                </View>
+                <View >
+                  <TouchableOpacity
+                    style={[appStyles.btn, appStyles.btnBlue, styles.btn, {display: isEditable?'flex' : 'none'}]}
+                    onPress={() => {
+                      setIsEditable(false)  
+                      handleSubmit
+                    }}
+                  >
+                    <Text style={[appStyles.darkFontColor, styles.btnText]}>Save Changes</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+      </View>
+      <TouchableOpacity
+        style={[appStyles.btn, appStyles.btnBlue, styles.btn, {display: isEditable?'none' : 'flex'}]}
+        onPress={() => setIsEditable(true)} 
+      >
+        <FontAwesome6Icon name="pen-to-square" size={20} style={styles.btnIcon}/>
+        <Text style={[appStyles.darkFontColor, styles.btnText]}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[appStyles.btn, appStyles.btnRed, styles.btn, {display: isEditable?'none' : 'flex'}]}
+        onPress={() => Alert.alert("logout")} 
+      >
+        <FontAwesome6Icon name="right-from-bracket" size={20} style={styles.btnIcon}/>
+        <Text style={[appStyles.darkFontColor, styles.btnText]}>Logout</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 30,
+    marginVertical: 30
+  },
+  headerContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 50
+  },
+  headericonContainer: {
+    width: 150,
+    height: 150,
+    backgroundColor: '#2C3335',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    borderColor: "#fff",
+    borderWidth: 0.25,
+    margin: 10
+  },
+  iconContainer: {
+    backgroundColor: '#2C3335',
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inputWrapper: {
+    marginBottom: 15,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  inputStyle: {
+    backgroundColor: '#2C3335',
+    width: '80%',
+    height: 50,
+    padding: 8,
+    borderWidth: 0.25,
+    borderRadius: 5,
+    borderColor: '#fff',
+    marginHorizontal: 8,
+  },
+  btn: {
+    flexDirection: 'row', 
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+    marginHorizontal: 5,
+  },
+  btnColEdit: {
+    width: '50%'
+  },
+  btnText: {
+    fontSize: 18,
+  },
+  btnIcon: {
+    marginRight: 10
+  },
+
+})

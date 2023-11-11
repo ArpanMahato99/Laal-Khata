@@ -1,8 +1,8 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import { styles as appStyles } from '../styles'
-import LoginFragment from './fragments/LoginFragment'
-import SignupFragment from './fragments/SignupFragment'
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react';
+import { styles as appStyles } from '../../styles'
+import LoginFragment from '../fragments/LoginFragment'
+import SignupFragment from '../fragments/SignupFragment'
 
 export default function LoginScreen() {
     const [toggleLogin, setToggleLogin] = useState(true);
@@ -11,8 +11,8 @@ export default function LoginScreen() {
     <ScrollView keyboardShouldPersistTaps='always'>
         <View>
         <View style={styles.appTitleContainer}>
-            <Text style={[appStyles.darkFontColor, styles.title]}>LAAL</Text>
-            <Text style={[appStyles.darkFontColor, styles.title]}>KHATA</Text>
+            <Text style={[appStyles.darkFontColor, styles.title]}>{/* TODO */}</Text>
+            <Text style={[appStyles.darkFontColor, styles.title]}>{/* TODO */}</Text>
         </View>
         { toggleLogin ? (
                 <LoginFragment />
@@ -23,13 +23,13 @@ export default function LoginScreen() {
         <View style={styles.toggleContainer}>
             {!toggleLogin ? 
             (
-                <Pressable onPress={() => setToggleLogin(!toggleLogin)}>
+                <TouchableOpacity onPress={() => setToggleLogin(!toggleLogin)}>
                     <Text style={[appStyles.darkFontColor, appStyles.linkText]}>Already have an account? Login</Text>
-                </Pressable>
+                </TouchableOpacity>
             ) : (
-                <Pressable onPress={() => setToggleLogin(!toggleLogin)}>
+                <TouchableOpacity onPress={() => setToggleLogin(!toggleLogin)}>
                     <Text style={[appStyles.darkFontColor, appStyles.linkText]}>Create new account</Text>
-                </Pressable>
+                </TouchableOpacity>
             )}
         </View>
         </View>
