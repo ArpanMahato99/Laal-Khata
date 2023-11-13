@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React from 'react'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons'
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
 import { useNavigation } from '@react-navigation/native'
 import { getTime } from '../../formatter'
+import { styles as appStyles } from '../../styles'
 
 type TransactionDeatils = NativeStackScreenProps<FriendStackParamList, 'TransactionDetails'>
 
@@ -12,16 +14,31 @@ export default function TransactionDetails(props: TransactionDeatils) {
   const navigation = useNavigation<NativeStackNavigationProp<FriendStackParamList>>();
   const transaction: Transaction = props.route.params.item;
   const transactionDetails = Object.entries(transaction.transactionDetails);
-  console.log(transactionDetails);
-  
+  const getUsersApiCallData = [
+    {
+      userId: "6547d449b51c515e9e34c728",
+      fullName: "Arpan Mahato",
+      email: "test@abc.com",
+      phoneNumber: "8797021466",
+      upiId: "text@sbi.com"
+    },
+    {
+        userId: "6547d49bb51c515e9e34c72a",
+        fullName: "Joy",
+        email: "test1@abc.com",
+        phoneNumber: "8797021467",
+        upiId: "text1@sbi.com"
+    },
+  ]
   
   return (
     <View>
       <View style={styles.headerContainer}>
         <View style={styles.iconContainer}>
-          <FontAwesome5Icon 
-            name='file-invoice-dollar' 
+          <FontAwesomeIcon 
+            icon={faFileInvoiceDollar} 
             size={150}
+            color={appStyles.darkFontColor.color}
             />
         </View>
         <Text style={styles.total}>₹ {transaction.totalAmount.toFixed(2)}</Text>

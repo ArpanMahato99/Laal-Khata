@@ -3,11 +3,11 @@ import React from 'react'
 import {NativeStackScreenProps, NativeStackNavigationProp} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
 import { useNavigation } from '@react-navigation/native'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6'
 import {styles as appStyles} from '../../styles';
 import { Transactions } from '../../data/Transactions'
 import TransactionCardFragment from '../fragments/TransactionCardFragment'
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faUser, faBell, faMoneyCheckDollar, faSquarePlus, faUserPlus, faUserXmark} from '@fortawesome/free-solid-svg-icons'
 
 type FriendsTransactionProps = NativeStackScreenProps<FriendStackParamList, 'FriendsTransaction'>
 
@@ -32,7 +32,7 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
     <View style={styles.container}>
       <View style={styles.headerContainer}> 
         <View style={styles.iconContainer}>
-            <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
+            <FontAwesomeIcon icon={faUser} color={icon.color} size={icon.size} />
         </View>
         <View style={styles.userContainer}>
             <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>{connection.user2.fullName}</Text>
@@ -51,7 +51,8 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                 scrollEnabled={true}
                 renderItem={(item: Transaction) => (
                   < TouchableOpacity
-                    onPress={() => navigation.navigate('TransactionDetails', item)}
+                    onPress={() => {
+                      navigation.navigate('TransactionDetails', item)}}
                   >
                     <TransactionCardFragment {...item}/>
                   </TouchableOpacity>
@@ -64,7 +65,7 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                       style={[appStyles.btn, appStyles.btnYellow, styles.btn, styles.btnReminder]}
                       onPress={() => console.log("SEND REMINDER PRESSED")}
                     >
-                      <FontAwesome5Icon name="bell" size={20} style={styles.btnIcon}/>
+                      <FontAwesomeIcon icon={faBell} size={20} style={styles.btnIcon}/>
                       <Text style={[appStyles.darkFontColor, styles.btnText]}>Send Reminder</Text>
                     </TouchableOpacity>
                   </View>
@@ -73,14 +74,14 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                         style={[appStyles.btn, appStyles.btnBlue, styles.btn, styles.btnSettleUp]}
                         onPress={() => console.log("SEND SETTLE UP")}
                       >
-                        <FontAwesome6Icon name="money-check-dollar" size={20} style={styles.btnIcon}/>
+                        <FontAwesomeIcon icon={faMoneyCheckDollar} size={20} style={styles.btnIcon}/>
                         <Text style={[appStyles.darkFontColor, styles.btnText]}>Settle Up</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[appStyles.btn, appStyles.btnGreen, styles.btn, styles.btnAdd]}
                         onPress={() => console.log("SEND ADD")}
                       >
-                        <FontAwesome6Icon name="circle-plus" size={20} style={styles.btnIcon}/>
+                        <FontAwesomeIcon icon={faSquarePlus} size={20} style={styles.btnIcon}/>
                         <Text style={[appStyles.darkFontColor, styles.btnText]}>Add Expense</Text>
                       </TouchableOpacity>
                   </View>
@@ -103,14 +104,14 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                       style={[appStyles.btn, appStyles.btnGreen, styles.btn]}
                       onPress={() => console.log("SEND ADD")}
                     >
-                      <FontAwesome6Icon name="user-plus" size={20} style={styles.btnIcon}/>
+                      <FontAwesomeIcon icon={faUserPlus} size={20} style={styles.btnIcon}/>
                       <Text style={[appStyles.darkFontColor, styles.btnText]}>Accept</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[appStyles.btn, appStyles.btnRed, styles.btn]}
                       onPress={() => console.log("SEND SETTLE UP")}
                     >
-                      <FontAwesome6Icon name="user-xmark" size={20} style={styles.btnIcon}/>
+                      <FontAwesomeIcon icon={faUserXmark} size={20} style={styles.btnIcon}/>
                       <Text style={[appStyles.darkFontColor, styles.btnText]}>Decline</Text>
                     </TouchableOpacity>
                   </View>
@@ -124,7 +125,7 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                       style={[appStyles.btn, appStyles.btnRed, styles.btn]}
                       onPress={() => console.log("SEND SETTLE UP")}
                     >
-                      <FontAwesome6Icon name="user-xmark" size={20} style={styles.btnIcon}/>
+                      <FontAwesomeIcon icon={faUserXmark} size={20} style={styles.btnIcon}/>
                       <Text style={[appStyles.darkFontColor, styles.btnText]}>Cancel Request</Text>
                     </TouchableOpacity>
                   </View>
@@ -209,7 +210,8 @@ const styles = StyleSheet.create({
     width: '48%',
   },
   btnIcon: {
-    marginRight: 10
+    marginRight: 10,
+    color: "#fff"
   },
   awaitingBody: {
     height: "90%",

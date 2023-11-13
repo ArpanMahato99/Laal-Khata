@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
 import React, {useState} from 'react'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6'
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import {styles as appStyles} from '../../styles';
 import { Formik } from 'formik';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faUser, faRightToBracket, faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons'
+import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
 export default function ProfileScreen() {
   const icon = {
@@ -24,7 +25,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.headericonContainer}>
-            <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
+            <FontAwesomeIcon icon={faUser} color={icon.color} size={icon.size} />
         </View>
       </View>
       <View >
@@ -37,9 +38,9 @@ export default function ProfileScreen() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon
-                        name='user'
+                        icon={faUser}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -54,9 +55,9 @@ export default function ProfileScreen() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon 
-                        name='phone'
+                        icon={faPhone}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -72,9 +73,9 @@ export default function ProfileScreen() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon 
-                        name='envelope-open'
+                        icon={faEnvelope}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -88,8 +89,8 @@ export default function ProfileScreen() {
                 </View>
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
-                      <FontAwesome5Icon 
-                        name='google-pay'
+                      <FontAwesomeIcon 
+                        icon={faGooglePay}
                         color={appStyles.textInputPlaceholder.color}
                         size={40}
                       />
@@ -122,14 +123,14 @@ export default function ProfileScreen() {
         style={[appStyles.btn, appStyles.btnBlue, styles.btn, {display: isEditable?'none' : 'flex'}]}
         onPress={() => setIsEditable(true)} 
       >
-        <FontAwesome6Icon name="pen-to-square" size={20} style={styles.btnIcon}/>
+        <FontAwesomeIcon icon={faPenToSquare} size={20} style={styles.btnIcon}/>
         <Text style={[appStyles.darkFontColor, styles.btnText]}>Edit</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[appStyles.btn, appStyles.btnRed, styles.btn, {display: isEditable?'none' : 'flex'}]}
         onPress={() => Alert.alert("logout")} 
       >
-        <FontAwesome6Icon name="right-from-bracket" size={20} style={styles.btnIcon}/>
+        <FontAwesomeIcon icon={faRightToBracket} size={20} style={styles.btnIcon}/>
         <Text style={[appStyles.darkFontColor, styles.btnText]}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -196,7 +197,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   btnIcon: {
-    marginRight: 10
+    marginRight: 10,
+    color: "#fff"
   },
 
 })

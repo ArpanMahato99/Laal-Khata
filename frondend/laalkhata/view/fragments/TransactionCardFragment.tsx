@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { PropsWithChildren } from 'react'
 import { Transactions } from '../../data/Transactions'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons'
 import { getDate, getMonth } from '../../formatter';
 import { connections } from '../../data/Connections';
 import { styles as appStyles } from '../../styles';
@@ -58,8 +59,8 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
           <Text style={styles.dateTxt}>{getDate(timestamp)}</Text>
         </View>
         <View style={styles.iconContainer}>
-          <FontAwesome5Icon 
-            name='file-invoice-dollar' 
+          <FontAwesomeIcon 
+            icon={faFileInvoiceDollar} 
             color={currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color} 
             size={40}
             />

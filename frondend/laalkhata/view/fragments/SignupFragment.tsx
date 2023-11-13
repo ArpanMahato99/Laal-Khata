@@ -1,7 +1,8 @@
 import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react';
-import FontAwesomeIcon  from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {FontAwesomeIcon}  from '@fortawesome/react-native-fontawesome';
+import {faUser, faPhone, faEnvelopeOpen, faEnvelope, faUnlock} from '@fortawesome/free-solid-svg-icons'
+import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
 import {styles as appStyles} from '../../styles';
 import {Formik} from 'formik'
 
@@ -24,9 +25,9 @@ export default function SignupFragment() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon
-                        name='user'
+                        icon={faUser}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -40,9 +41,9 @@ export default function SignupFragment() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon 
-                        name='phone'
+                        icon={faPhone}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -57,9 +58,9 @@ export default function SignupFragment() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon 
-                        name='envelope-open'
+                        icon={faEnvelope}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -73,9 +74,9 @@ export default function SignupFragment() {
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
                       <FontAwesomeIcon 
-                        name='unlock-alt'
+                        icon={faUnlock}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={25}
                       />
                   </View>
                   <TextInput
@@ -89,8 +90,8 @@ export default function SignupFragment() {
                 </View>
                 <View style={styles.inputWrapper}>
                   <View style={styles.iconContainer}>
-                      <FontAwesome5Icon 
-                        name='google-pay'
+                      <FontAwesomeIcon
+                        icon={faGooglePay}
                         color={appStyles.textInputPlaceholder.color}
                         size={40}
                       />

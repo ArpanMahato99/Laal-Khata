@@ -5,7 +5,8 @@ import FriendCardFragment from '../fragments/FriendCardFragment'
 import { connections } from '../../data/Connections'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faUserPlus} from '@fortawesome/free-solid-svg-icons'
 
 type FriendProps = NativeStackScreenProps<FriendStackParamList, 'FriendsScreen'>;
 
@@ -13,12 +14,11 @@ export default function FriendsScreen({navigation}: FriendProps) {
   return (
     <View >
       <View style={styles.headerIconContainer}>
-        <TouchableOpacity style={styles.headerIcon}>
-            <FontAwesome5Icon 
-                name='user-plus' 
+        <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.navigate('AddFriend')}>
+            <FontAwesomeIcon 
+                icon={faUserPlus} 
                 color={styles.headerIcon.color} 
                 size={styles.headerIcon.fontSize}
-                onPress={() => navigation.navigate('AddFriend')}
             />
         </TouchableOpacity>
       </View>

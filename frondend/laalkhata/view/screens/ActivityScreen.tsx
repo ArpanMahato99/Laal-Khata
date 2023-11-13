@@ -4,7 +4,8 @@ import ActivityCardFragment from '../fragments/ActivityCardFragment'
 import { Transactions } from '../../data/Transactions'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { ActivityStackParamList } from '../navigators/ActivityStackNavigator'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faFilter} from '@fortawesome/free-solid-svg-icons'
 
 type ActityProps = NativeStackScreenProps<ActivityStackParamList, 'Activity'>;
 
@@ -13,8 +14,8 @@ export default function ActivityScreen({navigation}: ActityProps) {
     <View>
       <View style={styles.headerIconContainer}>
         <TouchableOpacity style={styles.headerIcon}>
-            <FontAwesome5Icon 
-                name='filter'
+            <FontAwesomeIcon 
+                icon={faFilter}
                 color={styles.headerIcon.color} 
                 size={styles.headerIcon.fontSize}
             />

@@ -1,8 +1,8 @@
 import { Button, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import type { PropsWithChildren } from 'react'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
-import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6'
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faUser} from '@fortawesome/free-solid-svg-icons'
 import {styles as appStyles} from '../../styles'
 
 type FriendCardProps = PropsWithChildren<Connection>;
@@ -25,7 +25,7 @@ export default function FriendCardFragment(connection: FriendCardProps): JSX.Ele
     <View style={styles.cardContainer}>
         <View style={styles.userContainer}>
             <View style={styles.iconContainer}>
-                <FontAwesome5Icon name='user-alt' color={icon.color} size={icon.size} />
+                <FontAwesomeIcon icon={faUser} color={icon.color} size={icon.size} />
             </View>
             <View style={styles.userNameContainer}>
                 <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>

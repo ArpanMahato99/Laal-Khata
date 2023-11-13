@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { PropsWithChildren } from 'react'
-import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6';
 import { getTime } from '../../formatter';
 import { connections } from '../../data/Connections';
 import { styles as appStyles } from '../../styles';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faMoneyBillTransfer} from '@fortawesome/free-solid-svg-icons'
 
 type ActivityProps = PropsWithChildren<Transaction>
 
@@ -58,8 +59,8 @@ export default function ActivityCardFragment(transaction: ActivityProps) {
   return (
     <View style={styles.activityContainer}>
       <View style={styles.iconContainer}>
-          <FontAwesome6Icon 
-            name='money-bill-transfer' 
+          <FontAwesomeIcon 
+            icon={faMoneyBillTransfer} 
             color={currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color} 
             size={30}
           />    

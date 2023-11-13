@@ -3,11 +3,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ProfileScreen from '../screens/ProfileScreen';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import FontAwesome6Icone from 'react-native-vector-icons/FontAwesome6';
 import { styles as appStyles} from '../../styles';
 import FriendsStackNavigation from './FriendsStackNavigation';
 import ActivityStackNavigator from './ActivityStackNavigator';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
+import {faUserFriends, faMoneyBillTransfer, faUser} from '@fortawesome/free-solid-svg-icons'
 
 const Tab = createBottomTabNavigator();
 
@@ -31,8 +31,8 @@ export default function BottomTabNavigator() {
             options={{
                 tabBarIcon: ({color}) => (
                     <View>
-                        <FontAwesome5Icon 
-                            name='user-friends' 
+                        <FontAwesomeIcon 
+                            icon={faUserFriends} 
                             color={color} 
                             size={30}
                         />
@@ -47,8 +47,8 @@ export default function BottomTabNavigator() {
             options={{
                 tabBarIcon: ({color}) => (
                     <View>
-                        <FontAwesome6Icone 
-                            name='money-bill-transfer' 
+                        <FontAwesomeIcon
+                            icon={faMoneyBillTransfer}
                             color={color} 
                             size={30} />
                     </View>
@@ -61,7 +61,7 @@ export default function BottomTabNavigator() {
             options={{
                 tabBarIcon: ({color}) => (
                     <View>
-                        <FontAwesome5Icon name='user-alt' color={color} size={30} />
+                        <FontAwesomeIcon icon={faUser} color={color} size={25} />
                     </View>
                 )
             }}
