@@ -3,10 +3,11 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import ActivityScreen from '../screens/ActivityScreen';
 import { styles as appStyles } from '../../styles';
+import TransactionDetails from '../screens/TransactionDetails';
 
 export type ActivityStackParamList = {
   Activity: undefined,
-  TransactionDetails: undefined,
+  TransactionDetails: Transaction,
 }
 
 const Stack = createNativeStackNavigator<ActivityStackParamList>();
@@ -23,6 +24,10 @@ export default function ActivityStackNavigator() {
       <Stack.Screen
         name='Activity'
         component={ActivityScreen}
+      />
+      <Stack.Screen
+        name='TransactionDetails'
+        component={TransactionDetails}
       />
     </Stack.Navigator>
   )

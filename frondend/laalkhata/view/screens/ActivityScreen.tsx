@@ -27,7 +27,7 @@ export default function ActivityScreen({navigation}: ActityProps) {
         keyExtractor={item => item.transactionId}
         renderItem={({item}) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("TransactionDetails")}
+            onPress={() => navigation.navigate("TransactionDetails", item)}
           >
             <ActivityCardFragment {...item} />
           </TouchableOpacity>
