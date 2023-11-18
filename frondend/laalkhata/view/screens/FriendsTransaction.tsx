@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList, TouchableOpacity, Button } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions} from 'react-native'
+import React, { useState } from 'react'
 import {NativeStackScreenProps, NativeStackNavigationProp} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
 import { useNavigation } from '@react-navigation/native'
@@ -7,13 +7,21 @@ import {styles as appStyles} from '../../styles';
 import { Transactions } from '../../data/Transactions'
 import TransactionCardFragment from '../fragments/TransactionCardFragment'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
-import {faUser, faBell, faMoneyCheckDollar, faSquarePlus, faUserPlus, faUserXmark} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faBell, faMoneyCheckDollar, faSquarePlus, faUserPlus, faUserXmark, faSearch, faFileInvoiceDollar, faIndianRupeeSign} from '@fortawesome/free-solid-svg-icons'
+import { connections } from '../../data/Connections'
+import Popover from 'react-native-popover-view/dist/Popover'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
+
 
 type FriendsTransactionProps = NativeStackScreenProps<FriendStackParamList, 'FriendsTransaction'>
 
 export default function FriendsTransaction(props: FriendsTransactionProps) {
-  // const {connection} = route.params;
-  const connection: Connection = props.route.params;
+
+  const [isSettleUpVisible, setIsSettleUpVisible] = useState(false);
+
+  const {connectionId}: Connection = props.route.params;
+  const connection: Connection = connections.find(connection => connection.connectionId === connectionId);
+  
   const icon = {
     color: "#FFFFFF",
     size: 40
@@ -27,9 +35,33 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
   } 
   const navigation = useNavigation<NativeStackNavigationProp<FriendStackParamList>>();
   const userTransactions: Transaction[] = Transactions.filter(transaction => transaction.transactionDetails[connection.user1.userId] || transaction.transactionDetails[connection.user2.userId]);
-  
+
+  const SettleUpPopover = () => {
+    return(
+      <Popover
+        isVisible={isSettleUpVisible}
+        popoverStyle={styles.popover}
+        backgroundStyle={{opacity: 0.7}}
+        
+      >
+        <TouchableOpacity style={[appStyles.btn, styles.popoverCloseBtn]} onPress={() => setIsSettleUpVisible(false)}>
+          <FontAwesomeIcon 
+            icon={faCircleXmark}
+            color={appStyles.negativeTxt.color}
+            size={25}
+          />
+        </TouchableOpacity>
+        <View>
+          <Text>Record payment as cash</Text>
+          <Text>This feature does not move money.</Text>
+        </View>
+      </Popover>
+    )
+  }
+
   return (
     <View style={styles.container}>
+      <SettleUpPopover />
       <View style={styles.headerContainer}> 
         <View style={styles.iconContainer}>
             <FontAwesomeIcon icon={faUser} color={icon.color} size={icon.size} />
@@ -47,12 +79,12 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
               <FlatList
                 style={styles.flatList}
                 data={userTransactions}
-                keyExtractor={(item:Transaction) => item.transactionId}
+                keyExtractor={item => item.transactionId}
                 scrollEnabled={true}
-                renderItem={(item: Transaction) => (
+                renderItem={({item}) => (
                   < TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('TransactionDetails', item)}}
+                      navigation.navigate('TransactionDetails', {transactionId: item.transactionId})}}
                   >
                     <TransactionCardFragment {...item}/>
                   </TouchableOpacity>
@@ -72,14 +104,15 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                   <View style={styles.btnRowContainer}>
                       <TouchableOpacity
                         style={[appStyles.btn, appStyles.btnBlue, styles.btn, styles.btnSettleUp]}
-                        onPress={() => console.log("SEND SETTLE UP")}
+                        onPress={() => setIsSettleUpVisible(true)}
                       >
                         <FontAwesomeIcon icon={faMoneyCheckDollar} size={20} style={styles.btnIcon}/>
                         <Text style={[appStyles.darkFontColor, styles.btnText]}>Settle Up</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[appStyles.btn, appStyles.btnGreen, styles.btn, styles.btnAdd]}
-                        onPress={() => console.log("SEND ADD")}
+                        onPress={() => {
+                          navigation.navigate('AddExpense', {connectionId: connectionId})}}
                       >
                         <FontAwesomeIcon icon={faSquarePlus} size={20} style={styles.btnIcon}/>
                         <Text style={[appStyles.darkFontColor, styles.btnText]}>Add Expense</Text>
@@ -221,5 +254,19 @@ const styles = StyleSheet.create({
   awaitingBodyTxtContainer: {
     marginLeft: 10, 
     marginBottom: 20
+  },
+  popover: {
+    backgroundColor: "#000",
+    width: Dimensions.get('window').width * 0.9,
+    height: Dimensions.get('window').height * 0.3,
+    borderRadius: 10,
+    borderColor: '#fff',
+    borderWidth: 2
+  },
+  popoverCloseBtn: {
+    width: '10%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end'
   }
 })

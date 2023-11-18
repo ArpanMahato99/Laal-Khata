@@ -6,12 +6,14 @@ import FriendsScreen from '../screens/FriendsScreen'
 import FriendsTransaction from '../screens/FriendsTransaction'
 import TransactionDetails from '../screens/TransactionDetails'
 import AddFriendScreen from '../screens/AddFriendScreen'
+import AddExpenseScreen from '../screens/AddExpenseScreen'
 
 export type FriendStackParamList = {
   FriendsScreen: undefined,
-  FriendsTransaction: Connection,
-  TransactionDetails: Transaction,
-  AddFriend: undefined
+  FriendsTransaction: object,
+  TransactionDetails: object,
+  AddFriend: undefined,
+  AddExpense: object
 }
 
 const Stack = createNativeStackNavigator<FriendStackParamList>();
@@ -40,6 +42,10 @@ export default function FriendsStackNavigation() {
         <Stack.Screen
           name='AddFriend'
           component={AddFriendScreen}
+        />
+        <Stack.Screen
+          name='AddExpense'
+          component={AddExpenseScreen}
         />
       </Stack.Navigator>
   )

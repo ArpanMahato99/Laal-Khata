@@ -19,8 +19,7 @@ const currentUser: User = {
 } 
 
 export default function TransactionCardFragment(props: TransactionCardProps) {
-  
-  const {description, paidBy, timestamp, totalAmount, transactionDetails} = props.item;
+  const {description, paidBy, timestamp, totalAmount, transactionDetails} = props;
 
   const getPaidByUserName = (): string => {
     if (currentUser.userId === paidBy) {

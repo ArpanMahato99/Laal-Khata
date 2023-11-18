@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { getTime } from '../../formatter'
 import { styles as appStyles } from '../../styles'
 import { ActivityStackParamList } from '../navigators/ActivityStackNavigator'
+import { Transactions } from '../../data/Transactions'
 
 type TransactionDeatils = NativeStackScreenProps<FriendStackParamList | ActivityStackParamList, 'TransactionDetails'>
 
@@ -17,9 +18,10 @@ const icon = {
 }
 
 export default function TransactionDetails(props: TransactionDeatils) {
-  const navigation = useNavigation<NativeStackNavigationProp<FriendStackParamList>>();
-  console.log(props);
-  const transaction: Transaction = props.route.params.item;
+  const navigation = useNavigation()
+  const {transactionId} = props.route.params;
+  const transaction: Transaction = Transactions.find(txn => txn.transactionId === transactionId);
+  console.log(transaction);
   const transactionDetails = Object.entries(transaction.transactionDetails);
   const getUsersApiCallData = [
     {

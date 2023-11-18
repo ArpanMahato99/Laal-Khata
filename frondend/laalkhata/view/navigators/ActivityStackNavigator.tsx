@@ -7,7 +7,7 @@ import TransactionDetails from '../screens/TransactionDetails';
 
 export type ActivityStackParamList = {
   Activity: undefined,
-  TransactionDetails: Transaction,
+  TransactionDetails: any,
 }
 
 const Stack = createNativeStackNavigator<ActivityStackParamList>();
