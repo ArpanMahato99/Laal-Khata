@@ -52,8 +52,8 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
           />
         </TouchableOpacity>
         <View>
-          <Text>Record payment as cash</Text>
-          <Text>This feature does not move money.</Text>
+          <Text style={[appStyles.darkFontColor]}>Record payment as cash</Text>
+          <Text style={[appStyles.darkFontColor]}>This feature does not move money.</Text>
         </View>
       </Popover>
     )
@@ -68,14 +68,17 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
         </View>
         <View style={styles.userContainer}>
             <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>{connection.user2.fullName}</Text>
-            <Text style={[styles.secondaryText, appStyles.negativeTxt]}> you owe ₹10.20 to {connection.user2.fullName}</Text>
+            {
+              connection.status === 'APPROVED' &&
+              (<Text style={[styles.secondaryText, appStyles.negativeTxt]}> you owe ₹10.20 to {connection.user2.fullName}</Text>)
+            }
         </View>
       </View>
       {
         connection.status === 'APPROVED' && (
           <View>
             <View >
-              <Text style={styles.activityHeaderTxt}>ACTIVITIES</Text>
+              <Text style={[appStyles.darkFontColor, styles.activityHeaderTxt]}>ACTIVITIES</Text>
               <FlatList
                 style={styles.flatList}
                 data={userTransactions}
@@ -90,7 +93,7 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                   </TouchableOpacity>
                 )}
               />
-                </View>
+            </View>
                 <View>
                   <View style={styles.btnContainer}>
                     <TouchableOpacity
@@ -151,8 +154,8 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
                 ) : (
                   <View>
                     <View style={styles.awaitingBodyTxtContainer}>
-                      <Text>You've sent a connection request to {connection.user2.fullName}.</Text>
-                      <Text>Once they accept, you'll be able to initiate transactions and split expenses seamlessly. Sit tight, and we'll notify you once they respond!</Text>
+                      <Text style={appStyles.darkFontColor}>You've sent a connection request to {connection.user2.fullName}.</Text>
+                      <Text style={appStyles.darkFontColor}>Once they accept, you'll be able to initiate transactions and split expenses seamlessly. Sit tight, and we'll notify you once they respond!</Text>
                     </View>
                     <TouchableOpacity
                       style={[appStyles.btn, appStyles.btnRed, styles.btn]}
@@ -211,8 +214,8 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   flatList: {
-    height: "73%", // Set the height of the FlatList
-    marginBottom: 10
+    height: Dimensions.get('window').height * 0.47, // Set the height of the FlatList
+    marginBottom: 10,
   },
   btnRowContainer: {
     flexDirection: 'row',
@@ -259,14 +262,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     width: Dimensions.get('window').width * 0.9,
     height: Dimensions.get('window').height * 0.3,
-    borderRadius: 10,
-    borderColor: '#fff',
-    borderWidth: 2
   },
   popoverCloseBtn: {
     width: '10%',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    marginRight: 10
   }
 })

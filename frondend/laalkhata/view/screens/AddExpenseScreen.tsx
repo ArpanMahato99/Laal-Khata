@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,  TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, Text, View,  TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import {NativeStackScreenProps, NativeStackNavigationProp} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
@@ -124,7 +124,7 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
                 />
               </View>
               <View style={styles.addExpPickerContainer}>
-                <Text>Paid By</Text>
+                <Text style={appStyles.darkFontColor}>Paid By</Text>
                 <RNPickerSelect  
                   onValueChange={(value) => setFieldValue('paidBy', value)}
                   items={[
@@ -137,7 +137,7 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
                   value={values.paidBy}
                   // pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
                 />
-                <Text>and  split</Text>
+                <Text style={appStyles.darkFontColor}>and  split</Text>
                 <RNPickerSelect  
                   onValueChange={(value) => {
                     setSplit(value);
@@ -234,9 +234,10 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: 'row',
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     justifyContent: 'space-between',
-
+    marginBottom: 10,
+    width: Dimensions.get('window').width * 0.92 
   },
   userContainer: {
     flexDirection: 'row',
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addExpenseScrollContainer: {
-    height:"70%",
+    height: Dimensions.get('screen').width * 0.6,
     marginVertical: 10
   },
   cardIconContainer: {
@@ -266,6 +267,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#fff",
     borderWidth: 0.25,
-    margin: 10
 },
 })

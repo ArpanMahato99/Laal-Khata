@@ -111,8 +111,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.9,
     height: Dimensions.get('window').height * 0.3,
     borderRadius: 10,
-    borderColor: '#fff',
-    borderWidth: 2
   },
   popoverContent: {
     width: "100%",
@@ -140,7 +138,6 @@ const styles = StyleSheet.create({
     padding: 8,
     borderWidth: 1,
     borderRadius: 10,
-    marginHorizontal: 8,
   },
   popoverCloseBtnContainer:{
     alignContent: 'flex-end',
@@ -150,7 +147,8 @@ const styles = StyleSheet.create({
     width: '10%',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    marginRight: 10
   }
    
 })

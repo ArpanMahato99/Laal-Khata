@@ -66,7 +66,7 @@ export default function ActivityCardFragment(transaction: ActivityProps) {
           />    
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.contentHeader}>
+        <Text style={[appStyles.darkFontColor, styles.contentHeader]}>
           { getPaidByUserName() } added {description}
         </Text>
         <Text style={[styles.amount, {color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   date: {
-    fontSize: 13
+    fontSize: 13,
+    color: 'grey'
   }
 })

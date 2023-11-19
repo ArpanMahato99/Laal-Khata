@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: '#fff',
     marginHorizontal: 8,
+    color: "#fff"
   },
   btn: {
     flexDirection: 'row', 

@@ -20,8 +20,8 @@ export default function AddConnectionPopoverUserCard() {
                 <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>
                     UserName
                 </Text>
-                <Text style={styles.miniTxt}>E: test@mail.com</Text>
-                <Text style={styles.miniTxt}>M: 1234567890</Text>
+                <Text style={[appStyles.darkFontColor,styles.miniTxt]}>E: test@mail.com</Text>
+                <Text style={[appStyles.darkFontColor,styles.miniTxt]}>M: 1234567890</Text>
             </View>
         </View>
         <TouchableOpacity

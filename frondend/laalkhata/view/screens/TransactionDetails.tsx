@@ -57,24 +57,24 @@ export default function TransactionDetails(props: TransactionDeatils) {
         </View>
         <View>
           <View>
-            <Text style={styles.detailContainerTxt}>Transcation ID:</Text>
-            <Text>{transaction.transactionId}</Text>
+            <Text style={styles.detailHeaderTxt}>Transcation ID:</Text>
+            <Text style={appStyles.darkFontColor}>{transaction.transactionId}</Text>
           </View>
           <View>
-            <Text style={styles.detailContainerTxt}>Paid By:</Text>
-            <Text>{getUserName(transaction.paidBy)}</Text>
+            <Text style={styles.detailHeaderTxt}>Paid By:</Text>
+            <Text style={appStyles.darkFontColor}>{getUserName(transaction.paidBy)}</Text>
           </View>
           <View>
-            <Text style={styles.detailContainerTxt}>Transaction Date:</Text>
-            <Text>{getTime(transaction.timestamp)}</Text>
+            <Text style={styles.detailHeaderTxt}>Transaction Date:</Text>
+            <Text style={appStyles.darkFontColor}>{getTime(transaction.timestamp)}</Text>
           </View>
           <View>
-            <Text style={styles.detailContainerTxt}>Total Amount:</Text>
-            <Text>₹ {transaction.totalAmount.toFixed(2)}</Text>
+            <Text style={styles.detailHeaderTxt}>Total Amount:</Text>
+            <Text style={appStyles.darkFontColor}>₹ {transaction.totalAmount.toFixed(2)}</Text>
           </View>
           <View>
-            <Text style={styles.detailContainerTxt}>Description:</Text>
-            <Text>{transaction.description}</Text>
+            <Text style={styles.detailHeaderTxt}>Description:</Text>
+            <Text style={appStyles.darkFontColor}>{transaction.description}</Text>
           </View>
         </View>
       </View>
@@ -135,10 +135,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
     padding: 20,
+
   },
-  detailContainerTxt: {
+  detailHeaderTxt: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#fff'
   },
   userContainer: {
     flexDirection: 'row',

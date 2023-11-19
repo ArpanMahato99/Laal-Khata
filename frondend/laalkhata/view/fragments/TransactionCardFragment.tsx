@@ -54,8 +54,8 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <View style={styles.dateContainer}>
-          <Text style={styles.monthTxt}>{getMonth(timestamp)}</Text>
-          <Text style={styles.dateTxt}>{getDate(timestamp)}</Text>
+          <Text style={[appStyles.darkFontColor,styles.monthTxt]}>{getMonth(timestamp)}</Text>
+          <Text style={[appStyles.darkFontColor, styles.dateTxt]}>{getDate(timestamp)}</Text>
         </View>
         <View style={styles.iconContainer}>
           <FontAwesomeIcon 
@@ -65,10 +65,10 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
             />
         </View>
         <View style={styles.mainTxtContainer}>
-          <Text style={styles.mainTxt}>
+          <Text style={[appStyles.darkFontColor, styles.mainTxt]}>
             {description}
           </Text>
-          <Text>
+          <Text style={appStyles.darkFontColor}>
             {getPaidByUserName()} paid {totalAmount.toFixed(2)}
           </Text>
         </View>
