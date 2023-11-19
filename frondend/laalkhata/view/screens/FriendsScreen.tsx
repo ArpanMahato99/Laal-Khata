@@ -76,6 +76,7 @@ export default function FriendsScreen({navigation}: FriendProps) {
         </TouchableOpacity>
       </View>
       <FlatList
+        style={styles.flatList}
         data={connections}
         keyExtractor={item => item.connectionId}
         renderItem={({item}) => (
@@ -103,8 +104,8 @@ const styles = StyleSheet.create({
     fontSize: 25
   }, 
   flatList: {
-    height: "95%", // Set the height of the FlatList
-    marginBottom: 10
+    height: Dimensions.get('screen').height * 0.95,
+    marginBottom: 10,
   },
   popover: {
     backgroundColor: "#000",
@@ -124,8 +125,8 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     backgroundColor: '#2C3335',
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     borderRadius: 10,
     flex: 1,
     alignItems: 'center',

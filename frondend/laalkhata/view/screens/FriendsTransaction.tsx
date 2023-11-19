@@ -34,7 +34,11 @@ export default function FriendsTransaction(props: FriendsTransactionProps) {
     upiId: "text@sbi.com"
   } 
   const navigation = useNavigation<NativeStackNavigationProp<FriendStackParamList>>();
-  const userTransactions: Transaction[] = Transactions.filter(transaction => transaction.transactionDetails[connection.user1.userId] || transaction.transactionDetails[connection.user2.userId]);
+  const userTransactions: Transaction[] = 
+      Transactions.filter(transaction => 
+          (transaction.transactionDetails[connection.user1.userId] 
+          || transaction.transactionDetails[connection.user2.userId])
+        );
 
   const SettleUpPopover = () => {
     return(
@@ -194,7 +198,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     borderColor: "#fff",
-    borderWidth: 0.25,
+    borderWidth: 1,
     marginBottom: 10,
   },
   userContainer: {
@@ -214,7 +218,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   flatList: {
-    height: Dimensions.get('window').height * 0.47, // Set the height of the FlatList
+    height: Dimensions.get('screen').height * 0.55, 
     marginBottom: 10,
   },
   btnRowContainer: {
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5
   },
   btnText: {
-    fontSize: 18,
+    fontSize: 16,
   },
   btnReminder: {
     backgroundColor: "#F3B431"

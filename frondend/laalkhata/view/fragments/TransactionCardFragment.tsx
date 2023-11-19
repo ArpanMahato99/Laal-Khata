@@ -61,25 +61,25 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
           <FontAwesomeIcon 
             icon={faFileInvoiceDollar} 
             color={currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color} 
-            size={40}
+            size={25}
             />
         </View>
         <View style={styles.mainTxtContainer}>
           <Text style={[appStyles.darkFontColor, styles.mainTxt]}>
             {description}
           </Text>
-          <Text style={appStyles.darkFontColor}>
+          <Text style={[appStyles.darkFontColor, styles.secondaryTxt]}>
             {getPaidByUserName()} paid {totalAmount.toFixed(2)}
           </Text>
         </View>
       </View>
       <View style={styles.secondaryTxtContainer}>
-        <Text style={{color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}}>
+        <Text style={[styles.secondaryTxt, {color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>
           {currentUser.userId === paidBy ?
-            'You lent' : 'You borrowed'  
+            'You lent' : 'You took'  
           }
         </Text>
-        <Text style={{color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}}>₹{getAmount()}</Text>
+        <Text style={[styles.secondaryTxt, {color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>₹{getAmount()}</Text>
       </View>
     </View>
   )
@@ -108,11 +108,11 @@ const styles = StyleSheet.create({
 
   },
   dateTxt: {
-    fontSize: 20
+    fontSize: 16
   },
   iconContainer: {
-    width: 60,
-    height: 60,
+    width: 40,
+    height: 40,
     backgroundColor: '#2C3335',
     justifyContent: 'center',
     alignItems: 'center',
@@ -124,10 +124,13 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   mainTxt: {
-    fontSize: 20
+    fontSize: 16
   },
   secondaryTxtContainer: {
     alignItems: 'flex-end',
     paddingRight: 20,
+  },
+  secondaryTxt: {
+    fontSize: 12
   }
 })

@@ -1,10 +1,11 @@
-import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react';
 import {FontAwesomeIcon}  from '@fortawesome/react-native-fontawesome';
 import {faUser, faPhone, faEnvelopeOpen, faEnvelope, faUnlock} from '@fortawesome/free-solid-svg-icons'
 import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
 import {styles as appStyles} from '../../styles';
 import {Formik} from 'formik'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignupFragment() {
   const initValues = {
@@ -14,11 +15,24 @@ export default function SignupFragment() {
     password: '',
     upiId: ''
   }
+
+  const signUpUser = async (values) => {
+    const data = {
+      userId: "6547d449b51c515e9e34c728",
+      fullName: "Arpan Mahato",
+      email: "test@abc.com",
+      phoneNumber: "8797021466",
+      upiId: "text@sbi.com"
+    } 
+    await AsyncStorage.setItem("userData", JSON.stringify(data));
+    await AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
+  }
+
   return (
         <View style={[appStyles.container]}>
           <Formik
             initialValues={initValues}
-            onSubmit={values => console.log(values)}
+            onSubmit={values => signUpUser(values)}
           >
             {({handleChange, handleSubmit, values}) => (
               <View>
@@ -27,7 +41,7 @@ export default function SignupFragment() {
                       <FontAwesomeIcon
                         icon={faUser}
                         color={appStyles.textInputPlaceholder.color}
-                        size={25}
+                        size={20}
                       />
                   </View>
                   <TextInput
@@ -43,7 +57,7 @@ export default function SignupFragment() {
                       <FontAwesomeIcon 
                         icon={faPhone}
                         color={appStyles.textInputPlaceholder.color}
-                        size={25}
+                        size={20}
                       />
                   </View>
                   <TextInput
@@ -60,7 +74,7 @@ export default function SignupFragment() {
                       <FontAwesomeIcon 
                         icon={faEnvelope}
                         color={appStyles.textInputPlaceholder.color}
-                        size={25}
+                        size={20}
                       />
                   </View>
                   <TextInput
@@ -76,7 +90,7 @@ export default function SignupFragment() {
                       <FontAwesomeIcon 
                         icon={faUnlock}
                         color={appStyles.textInputPlaceholder.color}
-                        size={25}
+                        size={20}
                       />
                   </View>
                   <TextInput
@@ -93,7 +107,7 @@ export default function SignupFragment() {
                       <FontAwesomeIcon
                         icon={faGooglePay}
                         color={appStyles.textInputPlaceholder.color}
-                        size={40}
+                        size={30}
                       />
                   </View>
                   <TextInput
@@ -122,8 +136,8 @@ export default function SignupFragment() {
     const styles = StyleSheet.create({
       iconContainer: {
         backgroundColor: '#2C3335',
-        height: 50,
-        width: 50,
+        height: 40,
+        width: 30,
         borderRadius: 10,
         flex: 1,
         alignItems: 'center',
@@ -137,25 +151,22 @@ export default function SignupFragment() {
       inputStyle: {
         backgroundColor: '#2C3335',
         width: '80%',
-        height: 50,
+        height: 40,
         padding: 8,
-        borderWidth: 1,
         borderRadius: 10,
         marginHorizontal: 8,
       },
       btnContainer: {
-        flex: 1,
         alignItems: 'center'
       },
       btn: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%',
+        width: Dimensions.get('screen').width * 0.50,
         backgroundColor: '#218F76',
       },
       btnText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold'
       },
       

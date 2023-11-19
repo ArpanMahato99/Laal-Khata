@@ -1,26 +1,51 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {styles as appStyles} from '../../styles';
 import { Formik } from 'formik';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faUser, faRightToBracket, faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons'
 import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function ProfileScreen() {
   const icon = {
     color: "#FFFFFF",
     size: 40
   }
-  const currentUser: User = {
-    userId: "6547d449b51c515e9e34c728",
-    fullName: "Arpan Mahato",
-    email: "test@abc.com",
-    phoneNumber: "8797021466",
-    upiId: "text@sbi.com"
-  } 
-
+  const [user, setUser] = useState(
+    {
+      userId: "",
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      upiId: ""
+    } 
+  );
   const [isEditable, setIsEditable] = useState(false);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const data = await AsyncStorage.getItem('userData');
+      if(data !== null) {
+        setUser(JSON.parse(data));
+      }
+    }
+    loadUserData()
+  }, [])
+  
+
+  const logout = async () => {
+    console.log("here");
+    const data = await AsyncStorage.getItem('userData');
+    if(data !== null) {
+      console.log(data);
+    }
+    
+    await AsyncStorage.setItem("userData", JSON.stringify(null));
+    await AsyncStorage.setItem("isUserSignedIn", JSON.stringify(false))
+  }
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -30,7 +55,7 @@ export default function ProfileScreen() {
       </View>
       <View >
       <Formik
-            initialValues={currentUser}
+            initialValues={user}
             onSubmit={values => console.log(values)}
           >
             {({handleChange, handleSubmit, values}) => (
@@ -128,7 +153,7 @@ export default function ProfileScreen() {
       </TouchableOpacity>
       <TouchableOpacity
         style={[appStyles.btn, appStyles.btnRed, styles.btn, {display: isEditable?'none' : 'flex'}]}
-        onPress={() => Alert.alert("logout")} 
+        onPress={() => logout()} 
       >
         <FontAwesomeIcon icon={faRightToBracket} size={20} style={styles.btnIcon}/>
         <Text style={[appStyles.darkFontColor, styles.btnText]}>Logout</Text>

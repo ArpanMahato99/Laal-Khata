@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -12,6 +12,7 @@ import {faUserFriends, faMoneyBillTransfer, faUser} from '@fortawesome/free-soli
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
+
   return (
     <Tab.Navigator
         screenOptions={{
@@ -72,15 +73,10 @@ export default function BottomTabNavigator() {
 
 const styles = StyleSheet.create({
     tabBarStyle: {
-        backgroundColor: "#192a56",
-        elevation: 0,    
-        height: 70,
-        paddingBottom: 5,
-        paddingTop: 5,
-        marginBottom: 20,
-        marginHorizontal: 10,
-        borderRadius: 20,
-        borderColor: "#192a56"
+        backgroundColor: "#000",  
+        height: Dimensions.get('window').height * 0.07,
+        paddingBottom: Dimensions.get('window').height * 0.02,
+        paddingTop: Dimensions.get('window').height * 0.02,
     },
     navText: {
         fontWeight: 'bold',

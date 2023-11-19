@@ -24,25 +24,26 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
   const {connectionId}: Connection = props.route.params;
   const connection: Connection = connections.find(connection => connection.connectionId === connectionId);
     const {user1, user2 } = connection;
-    const newTransactionDetails = { };
-    newTransactionDetails[user1.userId] = {
-      amount: 0.0,
-      status: 'UNSETTLED'
-    }
-    newTransactionDetails[user2.userId] = {
-      amount: 0.0,
-      status: 'UNSETTLED'
-    }
+    const newTransactionDetails = {
+      [user1.userId]: {
+        amount: 0.0,
+        status: 'UNSETTLED'
+      },
+      [user2.userId]: {
+        amount: 0.0,
+        status: 'UNSETTLED'
+      }
+    };
     const initValues = {
       tranasctionId: '',
       paidBy: '',
       description: '',
       totalAmount: 0.0,
-      trasactionDetails: newTransactionDetails
+      transactionDetails: newTransactionDetails
     } 
-    console.log(initValues);
 
     const AddExpenseUserCard = ({user, handleChange, values}) => {
+      
       return(
       <View style={styles.cardContainer}>
         <View style={styles.userContainer}>
@@ -58,10 +59,10 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
         <View style={styles.rightContainer}>
         <TextInput
           style={styles.inputStyle}
-          placeholder='Enter total amount'
           placeholderTextColor={appStyles.textInputPlaceholder.color}     
-          onChangeText={handleChange('description')}  
-          value={values.description}
+          onChangeText={handleChange(`transactionDetails.${user.userId}.amount`)}  
+          keyboardType='numeric'
+          value={values.transactionDetails[user.userId].amount}
         />
         </View>
       </View>
@@ -73,14 +74,15 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
     <View style={styles.container}>
         <Formik
           initialValues={initValues}
-          onSubmit={values => console.log(values)}
         >
           {({handleChange, handleSubmit, values, setFieldValue}) => (
             <View>
               <View style={styles.addExpBtnContainer}>
                 <TouchableOpacity
                   style={[appStyles.btn, appStyles.btnGreen, styles.btn, styles.btnAdd]}
-                  onPress={() => {
+                  onPress={() => 
+                   {
+                      console.log(values); 
                     // TODO: SAVE data and add the response from backend to transactions[0]
                   }}
                 >

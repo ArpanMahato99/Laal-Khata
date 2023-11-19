@@ -1,4 +1,4 @@
-import { Button, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import type { PropsWithChildren } from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
@@ -52,21 +52,21 @@ export default function FriendCardFragment(connection: FriendCardProps): JSX.Ele
 const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
-        marginHorizontal: 15,
-        marginVertical: 5,
+        marginHorizontal: Dimensions.get('screen').width * 0.01,
+        marginVertical: Dimensions.get('screen').height * 0.003,
         justifyContent: 'space-between',
         borderRadius: 10,
         backgroundColor: "#2C3335"
     },
     iconContainer: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         backgroundColor: '#2C3335',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
         borderColor: "#fff",
-        borderWidth: 0.25,
+        borderWidth: 1,
         margin: 10
     },
     userContainer: {
