@@ -6,26 +6,31 @@ import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
 import {styles as appStyles} from '../../styles';
 import {Formik} from 'formik'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { signup } from '../../api';
 
 export default function SignupFragment() {
   const initValues = {
     fullName: '',
-    phone: '',
+    phoneNumber: '',
     email: '',
-    password: '',
+    pass: '',
     upiId: ''
   }
 
   const signUpUser = async (values) => {
-    const data = {
-      userId: "6547d449b51c515e9e34c728",
-      fullName: "Arpan Mahato",
-      email: "test@abc.com",
-      phoneNumber: "8797021466",
-      upiId: "text@sbi.com"
-    } 
-    await AsyncStorage.setItem("userData", JSON.stringify(data));
-    await AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
+    console.log(values);
+    
+    const response = await signup(values);
+    if (response.status === 201) {
+      const responseData = await response.json();
+      console.log(responseData);
+      AsyncStorage.setItem("userData", JSON.stringify(responseData));
+      AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
+      
+    } else if(response.status === 400) {
+      const responseData = await response.json();
+      console.log(responseData);
+    }  
   }
 
   return (
@@ -65,8 +70,8 @@ export default function SignupFragment() {
                     placeholder='Phone Number'
                     placeholderTextColor={appStyles.textInputPlaceholder.color}  
                     keyboardType='numeric'
-                    onChangeText={handleChange('phone')}
-                    value={values.phone}        
+                    onChangeText={handleChange('phoneNumber')}
+                    value={values.phoneNumber}        
                   />
                 </View>
                 <View style={styles.inputWrapper}>
@@ -98,8 +103,8 @@ export default function SignupFragment() {
                     placeholder='Password'
                     secureTextEntry={true}
                     placeholderTextColor={appStyles.textInputPlaceholder.color}   
-                    onChangeText={handleChange('password')}
-                    value={values.password}         
+                    onChangeText={handleChange('pass')}
+                    value={values.pass}         
                   />
                 </View>
                 <View style={styles.inputWrapper}>

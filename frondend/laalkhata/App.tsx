@@ -13,6 +13,7 @@ export default function App() {
     const getLoggedInData = async () => {
       try {
         const signupData = await AsyncStorage.getItem('isUserSignedIn');
+        console.log(signupData);
         if(signupData !== null) {
           setUserSignedIn(JSON.parse(signupData));
         }
@@ -20,7 +21,7 @@ export default function App() {
     }
 
     getLoggedInData();
-  }, [])
+  }, [isUserSignedIn])
   
 
   return (

@@ -6,21 +6,23 @@ import { faPhone, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import {styles as appStyles} from '../../styles';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { login } from '../../api';
 
 export default function LoginFragment() {
-  const initValues = {phone:'', password: ''};
+  const initValues = {phoneNumber:'', password: ''};
 
   const loginUser = async (values) => {
-    const data = {
-      userId: "6547d449b51c515e9e34c728",
-      fullName: "Arpan Mahato",
-      email: "test@abc.com",
-      phoneNumber: "8797021466",
-      upiId: "text@sbi.com"
-    } 
-    await AsyncStorage.setItem("userData", JSON.stringify(data));
-    await AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
-    
+    const response = await login(values);
+    if (response.status === 200) {
+      const responseData = await response.json();
+      console.log(responseData);
+      AsyncStorage.setItem("userData", JSON.stringify(responseData));
+      AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
+      
+    } else if(response.status === 400) {
+      const responseData = await response.json();
+      console.log(responseData);
+    }    
   }
 
   return (
@@ -44,8 +46,8 @@ export default function LoginFragment() {
                 placeholder='Phone Number'
                 placeholderTextColor={appStyles.textInputPlaceholder.color}    
                 keyboardType='numeric'  
-                onChangeText={handleChange('phone')}  
-                value={values.phone}
+                onChangeText={handleChange('phoneNumber')}  
+                value={values.phoneNumber}
               />
             </View>
             <View style={styles.inputWrapper}>
