@@ -1,15 +1,26 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import ActivityCardFragment from '../fragments/ActivityCardFragment'
 import { Transactions } from '../../data/Transactions'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { ActivityStackParamList } from '../navigators/ActivityStackNavigator'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faFilter} from '@fortawesome/free-solid-svg-icons'
+import AppContext from '../context/AppContext'
 
 type ActityProps = NativeStackScreenProps<ActivityStackParamList, 'Activity'>;
 
 export default function ActivityScreen({navigation}: ActityProps) {
+  const {
+    isUserSignedIn, 
+    setUserSignedIn, 
+    user, 
+    setUser,
+    connections,
+    setConnections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
   return (
     <View>
       <View style={styles.headerIconContainer}>
@@ -23,7 +34,7 @@ export default function ActivityScreen({navigation}: ActityProps) {
       </View>
       <FlatList 
         style={styles.flatList}
-        data={Transactions}
+        data={transactions}
         keyExtractor={item => item.transactionId}
         renderItem={({item}) => (
           <TouchableOpacity

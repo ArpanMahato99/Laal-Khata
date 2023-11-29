@@ -77,7 +77,7 @@ export const getUserConnections = async userId => {
 }
 
 export const createTransaction = async transaction => {
-  const response = await fetch(`${LOCAL_BASE_URL}/transactions`, {
+  const response = await fetch(`${BASE_URL}/transactions`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

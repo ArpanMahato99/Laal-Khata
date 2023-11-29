@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigator from '../navigators/BottomTabNavigator'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserConnections, getUserTransactions } from '../../api';
+import AppContext from '../context/AppContext';
+import LoginScreen from './LoginScreen';
 
 
 
@@ -11,39 +13,60 @@ import { getUserConnections, getUserTransactions } from '../../api';
 
 export default function MainScreen() {
 
-  const [isUserSignedIn, setUserSignedIn] = useState(false);
+  const {
+    isUserSignedIn, 
+    setUserSignedIn, 
+    user, 
+    setUser,
+    connections,
+    setConnections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
 
   useEffect(() => {
-    const getUserData = async () => {
+    const getLoggedInData = async () => {
       try {
         const userData = await AsyncStorage.getItem('userData');
-        if(userData !== null) {
-          const user = JSON.parse(userData)
-          console.log(user);
-          console.log(user.userId);
-          
-          const connectionResponse = await getUserConnections(user.userId);
-          const transactionResponse = await getUserTransactions(user.userId);
-          console.log("TRANSACTION RESPONSE", transactionResponse);
-          console.log("CONNECTION RESPONSE", connectionResponse);
-          if(connectionResponse.status === 200) {
-            console.log("CONENCTIONS: ", await connectionResponse.json());
+          if(userData !== null) {
+            const currentUser = JSON.parse(userData)
+            setUser(currentUser);
+            console.log(user);
+            console.log(user.userId);
+            
+            const connectionResponse = await getUserConnections(user.userId);
+            const transactionResponse = await getUserTransactions(user.userId);
+            if(connectionResponse.status === 200) {
+              const conn = await connectionResponse.json();
+              setConnections(conn)
+              console.log(conn);
+              
+            }
+            if (transactionResponse.status === 200) {
+              const txns = await transactionResponse.json();
+              setTransactions(txns)
+            }
+            
           }
-          if (transactionResponse.status === 200) {
-            console.log("TRANSATIONS: ", await transactionResponse.json());
-          }
-          
-        }
       } catch (e) {}
     }
-
-    getUserData();
+    getLoggedInData();
   }, [isUserSignedIn])
 
+  console.log("Context User: ", user);
+  console.log("Context Connection: ", connections);
+  console.log("Context Transactions: ", transactions);
   return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
+    <>
+      {
+          isUserSignedIn ? (
+            <NavigationContainer>
+              <BottomTabNavigator />
+            </NavigationContainer>
+          ) : <LoginScreen />
+        }
+    </>
+    
     
   )
 }

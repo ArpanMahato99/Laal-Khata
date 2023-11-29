@@ -1,9 +1,11 @@
 import { Button, Dimensions, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import type { PropsWithChildren } from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faUser} from '@fortawesome/free-solid-svg-icons'
 import {styles as appStyles} from '../../styles'
+import AppContext from '../context/AppContext'
+import { getText, getTextColor, totalAmountPaidForOtherUser } from '../../formatter'
 
 type FriendCardProps = PropsWithChildren<Connection>;
 
@@ -11,16 +13,20 @@ const icon = {
     color: "#FFFFFF",
     size: 30
 }
-const currentUser: User = {
-    userId: "6547d449b51c515e9e34c728",
-    fullName: "Arpan Mahato",
-    email: "test@abc.com",
-    phoneNumber: "8797021466",
-    upiId: "text@sbi.com"
-  } 
-
 
 export default function FriendCardFragment(connection: FriendCardProps): JSX.Element {
+    const {
+        user,
+        transactions
+    } = useContext(AppContext);
+    
+    const anotherUser = connection.user1.userId === user.userId ? connection.user2 : connection.user1;
+    const paidByUserTotal = totalAmountPaidForOtherUser(transactions, user.userId, anotherUser.userId);
+    const paidByAnotherUserTotal = totalAmountPaidForOtherUser(transactions, anotherUser.userId, user.userId);
+    const total = paidByUserTotal - paidByAnotherUserTotal;
+
+    useEffect(() => {}, [transactions])
+    
   return (
     <View style={styles.cardContainer}>
         <View style={styles.userContainer}>
@@ -29,7 +35,7 @@ export default function FriendCardFragment(connection: FriendCardProps): JSX.Ele
             </View>
             <View style={styles.userNameContainer}>
                 <Text style={[appStyles.darkFontColor,styles.userNameTxt]}>
-                    {   connection.user2.userId !== currentUser.userId ?
+                    {   connection.user2.userId !== user.userId ?
                         connection.user2.fullName : connection.user1.fullName
                     }
                 </Text>
@@ -39,8 +45,8 @@ export default function FriendCardFragment(connection: FriendCardProps): JSX.Ele
             {
                 connection.status === 'APPROVED' && (
                     <View>
-                        <Text style={[appStyles.negativeTxt, styles.miniTxt]}>you owe</Text>
-                        <Text style={[appStyles.negativeTxt]}>₹10.20</Text>
+                        <Text style={[styles.miniTxt, getTextColor(total)]}>{getText(total)}</Text>
+                        <Text style={getTextColor(total)}>{total != 0 && `₹${Math.abs(total).toFixed(2)}`}</Text>
                     </View>
                 )
             }

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, TextInput } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faFileInvoiceDollar, faUser} from '@fortawesome/free-solid-svg-icons'
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -9,6 +9,7 @@ import { getTime } from '../../formatter'
 import { styles as appStyles } from '../../styles'
 import { ActivityStackParamList } from '../navigators/ActivityStackNavigator'
 import { Transactions } from '../../data/Transactions'
+import AppContext from '../context/AppContext'
 
 type TransactionDeatils = NativeStackScreenProps<FriendStackParamList | ActivityStackParamList, 'TransactionDetails'>
 
@@ -18,11 +19,22 @@ const icon = {
 }
 
 export default function TransactionDetails(props: TransactionDeatils) {
+  const {
+    isUserSignedIn, 
+    setUserSignedIn, 
+    user, 
+    setUser,
+    connections,
+    setConnections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
   const navigation = useNavigation()
   const {transactionId} = props.route.params;
-  const transaction: Transaction = Transactions.find(txn => txn.transactionId === transactionId);
+  
+  const transaction= transactions.find(txn => txn.transactionId === transactionId);
   console.log(transaction);
-  const transactionDetails = Object.entries(transaction.transactionDetails);
+  const userTransactionDetails = Object.entries(transaction.userTransactionDetails);
   const getUsersApiCallData = [
     {
       userId: "6547d449b51c515e9e34c728",
@@ -79,7 +91,7 @@ export default function TransactionDetails(props: TransactionDeatils) {
         </View>
       </View>
       <FlatList
-          data={transactionDetails}
+          data={userTransactionDetails}
           keyExtractor={item=> item[0]}
           renderItem={({ item }) => (
             <View style={styles.detailsContainer}>

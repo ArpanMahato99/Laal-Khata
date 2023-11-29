@@ -1,31 +1,36 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useContext } from 'react'
 import { Transactions } from '../../data/Transactions'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons'
 import { getDate, getMonth } from '../../formatter';
 import { connections } from '../../data/Connections';
 import { styles as appStyles } from '../../styles';
+import AppContext from '../context/AppContext'
 
 
 type TransactionCardProps = PropsWithChildren<Transaction>;
 
-const currentUser: User = {
-  userId: "6547d449b51c515e9e34c728",
-  fullName: "Arpan Mahato",
-  email: "test@abc.com",
-  phoneNumber: "8797021466",
-  upiId: "text@sbi.com"
-} 
 
 export default function TransactionCardFragment(props: TransactionCardProps) {
-  const {description, paidBy, timestamp, totalAmount, transactionDetails} = props;
+  const {
+    isUserSignedIn, 
+    setUserSignedIn, 
+    user, 
+    setUser,
+    connections,
+    setConnections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
+  
+  const {description, paidBy, timestamp, totalAmount, userTransactionDetails} = props;
 
   const getPaidByUserName = (): string => {
-    if (currentUser.userId === paidBy) {
+    if (user.userId === paidBy) {
       return "You"
     }
-    const connectionIndex = connections.findIndex(connection => connection.user1.userId === paidBy || connection.user2.userId);
+    const connectionIndex = connections.findIndex(connection => connection.user1.userId === paidBy || connection.user2.userId === paidBy);
     if (connectionIndex !== -1) {
       return connections[connectionIndex].user1.userId === paidBy ? 
               connections[connectionIndex].user1.fullName : 
@@ -36,17 +41,17 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
   }
 
   const  getAmount = () => {
-    if(currentUser.userId === paidBy) {
-      const userIds = Object.keys(transactionDetails);
+    if(user.userId === paidBy) {
+      const userIds = Object.keys(userTransactionDetails);
       let sumAmount = 0.0;
       userIds.forEach(userId => {
-        if (userId !== currentUser.userId) {
-          sumAmount += transactionDetails[userId].amount;
+        if (userId !== user.userId) {
+          sumAmount += userTransactionDetails[userId].amount;
         }
       })
       return sumAmount.toFixed(2);
     } else {
-      return transactionDetails[currentUser.userId].amount.toFixed(2);
+      return userTransactionDetails[user.userId].amount.toFixed(2);
     }
   } 
   
@@ -60,7 +65,7 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
         <View style={styles.iconContainer}>
           <FontAwesomeIcon 
             icon={faFileInvoiceDollar} 
-            color={currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color} 
+            color={user.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color} 
             size={25}
             />
         </View>
@@ -74,12 +79,12 @@ export default function TransactionCardFragment(props: TransactionCardProps) {
         </View>
       </View>
       <View style={styles.secondaryTxtContainer}>
-        <Text style={[styles.secondaryTxt, {color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>
-          {currentUser.userId === paidBy ?
+        <Text style={[styles.secondaryTxt, {color:user.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>
+          {user.userId === paidBy ?
             'You lent' : 'You took'  
           }
         </Text>
-        <Text style={[styles.secondaryTxt, {color:currentUser.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>₹{getAmount()}</Text>
+        <Text style={[styles.secondaryTxt, {color:user.userId===paidBy ? appStyles.positiveTxt.color : appStyles.negativeTxt.color}]}>₹{getAmount()}</Text>
       </View>
     </View>
   )

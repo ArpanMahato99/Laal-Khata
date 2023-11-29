@@ -1,5 +1,5 @@
 import { Alert, Button, Dimensions, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react';
+import React, { useContext } from 'react';
 //import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import { faPhone, faUnlock } from '@fortawesome/free-solid-svg-icons';
@@ -7,8 +7,14 @@ import {styles as appStyles} from '../../styles';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../../api';
+import AppContext from '../context/AppContext';
 
 export default function LoginFragment() {
+  const {
+    setUserSignedIn, 
+    setUser,
+  } = useContext(AppContext);
+
   const initValues = {phoneNumber:'', password: ''};
 
   const loginUser = async (values) => {
@@ -18,7 +24,8 @@ export default function LoginFragment() {
       console.log(responseData);
       AsyncStorage.setItem("userData", JSON.stringify(responseData));
       AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
-      
+      setUser(responseData);
+      setUserSignedIn(true);
     } else if(response.status === 400) {
       const responseData = await response.json();
       console.log(responseData);

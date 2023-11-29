@@ -1,5 +1,5 @@
 import { Alert, Dimensions, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react';
+import React, { useContext } from 'react';
 import {FontAwesomeIcon}  from '@fortawesome/react-native-fontawesome';
 import {faUser, faPhone, faEnvelopeOpen, faEnvelope, faUnlock} from '@fortawesome/free-solid-svg-icons'
 import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
@@ -7,8 +7,15 @@ import {styles as appStyles} from '../../styles';
 import {Formik} from 'formik'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signup } from '../../api';
+import AppContext from '../context/AppContext';
 
 export default function SignupFragment() {
+
+  const {
+    setUserSignedIn, 
+    setUser,
+  } = useContext(AppContext);
+
   const initValues = {
     fullName: '',
     phoneNumber: '',
@@ -26,7 +33,8 @@ export default function SignupFragment() {
       console.log(responseData);
       AsyncStorage.setItem("userData", JSON.stringify(responseData));
       AsyncStorage.setItem("isUserSignedIn", JSON.stringify(true));
-      
+      setUser(responseData);
+      setUserSignedIn(true);
     } else if(response.status === 400) {
       const responseData = await response.json();
       console.log(responseData);

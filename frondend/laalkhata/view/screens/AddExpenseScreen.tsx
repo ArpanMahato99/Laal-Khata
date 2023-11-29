@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View,  TouchableOpacity, TextInput, ScrollView, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {NativeStackScreenProps, NativeStackNavigationProp} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
 import {styles as appStyles} from '../../styles';
 import { Transactions } from '../../data/Transactions'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import { faFileInvoiceDollar, faIndianRupeeSign, faFloppyDisk, faUser} from '@fortawesome/free-solid-svg-icons'
-import { connections } from '../../data/Connections'
 import { Formik } from 'formik';
 import RNPickerSelect from 'react-native-picker-select';
+import AppContext from '../context/AppContext';
+import { createTransaction } from '../../api';
+import { useNavigation } from '@react-navigation/native';
 
 
 type AddExpenseProps = NativeStackScreenProps<FriendStackParamList, 'AddExpense'>
@@ -19,10 +21,20 @@ const icon = {
 }
 
 export default function AddExpenseScreen(props: AddExpenseProps) {
+  const navigation = useNavigation<NativeStackNavigationProp<FriendStackParamList>>();
 
+  const {
+    user,
+    connections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
   const [split, setSplit] = useState("equally");
-  const {connectionId}: Connection = props.route.params;
-  const connection: Connection = connections.find(connection => connection.connectionId === connectionId);
+  const {connectionId} = props.route.params;
+  
+  const connection = connections.find(connection => connection.connectionId === connectionId);
+  console.log("Connection", connection);
+  
     const {user1, user2 } = connection;
     const newTransactionDetails = {
       [user1.userId]: {
@@ -36,11 +48,43 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
     };
     const initValues = {
       tranasctionId: '',
-      paidBy: '',
+      paidBy: user.userId,
       description: '',
       totalAmount: 0.0,
-      transactionDetails: newTransactionDetails
+      transactionType: 'TRANSACTION',
+      userTransactionDetails: newTransactionDetails
     } 
+
+    const onSubmit = async (values) => {
+      const userIds = Object.keys(values.userTransactionDetails)
+      values.totalAmount = Number(values.totalAmount);
+      if (split === 'equally') {
+        const amount = (values.totalAmount / 2).toFixed(2);
+        userIds.forEach(userId => values.userTransactionDetails[userId].amount = Number(amount));
+      }
+
+      let transactionTotal = 0.0;
+      userIds.forEach(userId => transactionTotal += values.userTransactionDetails[userId].amount);
+      if (transactionTotal != values.totalAmount) {
+        if(split === 'equally') {
+          const diff = Number((values.totalAmount - transactionTotal).toFixed(2));
+          const updatedAmount = values.userTransactionDetails[userIds[0]].amount + Number(diff);
+          values.userTransactionDetails[userIds[0]].amount = Number(updatedAmount.toFixed(2));
+        } else {
+          console.log("Uneven distribution");
+          
+        }
+      }
+      console.log("VALUES: ", values);
+      const response = await createTransaction(values);
+      console.log(response);
+      if(response.status === 201) {
+        const responseData = await response.json();
+        console.log('NEW TRANSACTION: ', responseData);
+        setTransactions([responseData, ...transactions])
+        navigation.goBack();
+      }
+    }
 
     const AddExpenseUserCard = ({user, handleChange, values}) => {
       
@@ -60,9 +104,9 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
         <TextInput
           style={styles.inputStyle}
           placeholderTextColor={appStyles.textInputPlaceholder.color}     
-          onChangeText={handleChange(`transactionDetails.${user.userId}.amount`)}  
+          onChangeText={handleChange(`userTransactionDetails.${user.userId}.amount`)}  
           keyboardType='numeric'
-          value={values.transactionDetails[user.userId].amount}
+          value={values[user.userId].amount}
         />
         </View>
       </View>
@@ -75,16 +119,12 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
         <Formik
           initialValues={initValues}
         >
-          {({handleChange, handleSubmit, values, setFieldValue}) => (
+          {({handleChange, values, setFieldValue}) => (
             <View>
               <View style={styles.addExpBtnContainer}>
                 <TouchableOpacity
                   style={[appStyles.btn, appStyles.btnGreen, styles.btn, styles.btnAdd]}
-                  onPress={() => 
-                   {
-                      console.log(values); 
-                    // TODO: SAVE data and add the response from backend to transactions[0]
-                  }}
+                  onPress={() => onSubmit(values)}
                 >
                   <FontAwesomeIcon 
                       icon={faFloppyDisk}
@@ -121,8 +161,9 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
                   style={styles.inputStyle}
                   placeholder='Enter total amount'
                   placeholderTextColor={appStyles.textInputPlaceholder.color}     
-                  onChangeText={handleChange('description')}  
-                  value={values.description}
+                  onChangeText={handleChange('totalAmount')}  
+                  value={values.totalAmount}
+                  keyboardType='numeric'
                 />
               </View>
               <View style={styles.addExpPickerContainer}>
@@ -130,8 +171,8 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
                 <RNPickerSelect  
                   onValueChange={(value) => setFieldValue('paidBy', value)}
                   items={[
-                    {label: user1.fullName, value: user1.userId},
-                    {label: user2.fullName, value: user2.userId},
+                    {label: user.userId === user1.userId ? 'You' : user1.fullName, value: user1.userId},
+                    {label: user.userId === user2.userId ? 'You' : user2.fullName, value: user2.userId}
                   ]}
                   textInputProps={styles.picker}
                   fixAndroidTouchableBug={true}
@@ -159,8 +200,8 @@ export default function AddExpenseScreen(props: AddExpenseProps) {
                 split === 'unequally' &&
                 <View style={[styles.addExpenseScrollContainer]}>
                   <ScrollView>
-                    <AddExpenseUserCard user={connection.user1} handleChange={handleChange} values={values}/>
-                    <AddExpenseUserCard user={connection.user2} handleChange={handleChange} values={values}/>
+                    <AddExpenseUserCard user={user1} handleChange={handleChange} values={values.userTransactionDetails}/>
+                    <AddExpenseUserCard user={user2} handleChange={handleChange} values={values.userTransactionDetails}/>
                   </ScrollView>
                 </View>
               }

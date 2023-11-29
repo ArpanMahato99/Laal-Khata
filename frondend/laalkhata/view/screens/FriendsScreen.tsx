@@ -1,7 +1,6 @@
 import { StyleSheet, View, FlatList, TouchableOpacity, Text, Dimensions, TextInput, BackHandler } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import FriendCardFragment from '../fragments/FriendCardFragment'
-import { connections } from '../../data/Connections'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { FriendStackParamList } from '../navigators/FriendsStackNavigation'
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
@@ -9,65 +8,35 @@ import {faUserPlus, faSearch} from '@fortawesome/free-solid-svg-icons'
 import { styles as appStyles } from '../../styles'
 import Popover from 'react-native-popover-view/dist/Popover'
 import { Placement } from 'react-native-popover-view/dist/Types'
-import AddConnectionPopoverUserCard from '../fragments/AddConnectionPopoverUserCard'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
+import AppContext from '../context/AppContext'
+import { searchUser } from '../../api'
 
 type FriendProps = NativeStackScreenProps<FriendStackParamList, 'FriendsScreen'>;
 
 export default function FriendsScreen({navigation}: FriendProps) {
 
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-  const [isSearchSuccess, setIsSearchSuccess] = useState(true);
+  const [isSearchSuccess, setIsSearchSuccess] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const {
+    isUserSignedIn, 
+    setUserSignedIn, 
+    user, 
+    setUser,
+    connections,
+    setConnections,
+    transactions,
+    setTransactions
+  } = useContext(AppContext);
 
-  const AddUserPopover = () => {
-
-    return(
-      <Popover
-        isVisible={isPopoverVisible}
-        popoverStyle={styles.popover}
-        placement={Placement.TOP}
-        backgroundStyle={{opacity: 0.7}}
-        
-      >
-        <TouchableOpacity style={[appStyles.btn, styles.popoverCloseBtn]} onPress={() => setIsPopoverVisible(false)}>
-          <FontAwesomeIcon 
-            icon={faCircleXmark}
-            color={appStyles.negativeTxt.color}
-            size={25}
-          />
-        </TouchableOpacity>
-        <View style={styles.popoverContent}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.inputStyle}
-              placeholder='Search User by Email or Phone Number'
-              placeholderTextColor={appStyles.textInputPlaceholder.color}    
-              // keyboardType='numeric'  
-              // onChangeText={handleChange('phone')}  
-              // value={values.phone}
-            />
-            <TouchableOpacity style={styles.iconContainer}>
-                <FontAwesomeIcon 
-                  icon={faSearch}
-                  color={appStyles.textInputPlaceholder.color}
-                  size={25}
-                />
-            </TouchableOpacity>
-          </View>
-          {
-            isSearchSuccess ? (<AddConnectionPopoverUserCard />) : (<Text>Search user by email or phone number!!!</Text>)
-          }
-        </View>
-      </Popover>
-    )
-  }
+  
 
   return (
     <View >
-      <AddUserPopover />
       <View style={styles.headerIconContainer}>
-        <TouchableOpacity style={styles.headerIcon} onPress={() => setIsPopoverVisible(true)}>
+        <TouchableOpacity style={styles.headerIcon} onPress={() => navigation.navigate('AddFriend')}>
             <FontAwesomeIcon 
                 icon={faUserPlus} 
                 color={styles.headerIcon.color} 
@@ -75,18 +44,22 @@ export default function FriendsScreen({navigation}: FriendProps) {
             />
         </TouchableOpacity>
       </View>
-      <FlatList
-        style={styles.flatList}
-        data={connections}
-        keyExtractor={item => item.connectionId}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('FriendsTransaction', {connectionId: item.connectionId})}
-          >
-            <FriendCardFragment {...item} />
-          </TouchableOpacity>
-        )}
-      />
+      {
+        !connections ? (<><Text>No Connection Available</Text></>) : (
+          <FlatList
+            style={styles.flatList}
+            data={connections}
+            keyExtractor={item => item.connectionId}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('FriendsTransaction', {connectionId: item.connectionId})}
+              >
+                <FriendCardFragment {...item} />
+              </TouchableOpacity>
+            )}
+          />
+        )  
+      }
       
     </View>
   )

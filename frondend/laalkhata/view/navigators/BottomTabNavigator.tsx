@@ -1,5 +1,5 @@
 import { Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ProfileScreen from '../screens/ProfileScreen';
@@ -8,10 +8,14 @@ import FriendsStackNavigation from './FriendsStackNavigation';
 import ActivityStackNavigator from './ActivityStackNavigator';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
 import {faUserFriends, faMoneyBillTransfer, faUser} from '@fortawesome/free-solid-svg-icons'
+import AppContext from '../context/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserConnections, getUserTransactions } from '../../api';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
+
 
   return (
     <Tab.Navigator

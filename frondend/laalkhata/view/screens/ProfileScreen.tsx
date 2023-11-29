@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {styles as appStyles} from '../../styles';
 import { Formik } from 'formik';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome'
@@ -7,6 +7,7 @@ import {faUser, faRightToBracket, faPhone, faEnvelope} from '@fortawesome/free-s
 import {faGooglePay} from '@fortawesome/free-brands-svg-icons'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppContext from '../context/AppContext';
 
 
 export default function ProfileScreen() {
@@ -14,30 +15,19 @@ export default function ProfileScreen() {
     color: "#FFFFFF",
     size: 40
   }
-  const [user, setUser] = useState(
-    {
-      userId: "",
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      upiId: ""
-    } 
-  );
+
+  const {
+    isUserSignedIn,
+    user
+  } = useContext(AppContext);
+
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
-    const loadUserData = async () => {
-      const data = await AsyncStorage.getItem('userData');
-      if(data !== null) {
-        setUser(JSON.parse(data));
-      }
-    }
-    loadUserData()
-  }, [])
+  }, [isUserSignedIn])
   
 
   const logout = async () => {
-    console.log("here");
     const data = await AsyncStorage.getItem('userData');
     if(data !== null) {
       console.log(data);

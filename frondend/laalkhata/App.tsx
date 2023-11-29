@@ -1,36 +1,29 @@
 import { SafeAreaView, StatusBar,  } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {styles} from './styles';
 import LoginScreen from './view/screens/LoginScreen';
 import MainScreen from './view/screens/MainScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppContext from './view/context/AppContext';
+import AppContextProvider from './view/context/AppContextProvider';
 
 export default function App() {
 
-  const [isUserSignedIn, setUserSignedIn] = useState(false);
+  // const {
+  //   isUserSignedIn, 
+  //   setUserSignedIn, 
+  // } = useContext(AppContext);
 
-  useEffect(() => {
-    const getLoggedInData = async () => {
-      try {
-        const signupData = await AsyncStorage.getItem('isUserSignedIn');
-        console.log(signupData);
-        if(signupData !== null) {
-          setUserSignedIn(JSON.parse(signupData));
-        }
-      } catch (e) {}
-    }
-
-    getLoggedInData();
-  }, [isUserSignedIn])
+  
   
 
   return (
-    <SafeAreaView style={styles.darkAppContainer}>
-      <StatusBar backgroundColor={styles.darkAppContainer.backgroundColor}/>
-      {
-        isUserSignedIn ? <MainScreen /> : <LoginScreen />
-      }
-    </SafeAreaView>
+      <AppContextProvider>
+        <SafeAreaView style={styles.darkAppContainer}>
+        <StatusBar backgroundColor={styles.darkAppContainer.backgroundColor}/>
+          <MainScreen />
+        </SafeAreaView>
+      </AppContextProvider>
   )
 }
 
